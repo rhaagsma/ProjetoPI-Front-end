@@ -22,6 +22,22 @@ async function saveUsuario(dataForm: DataUser) {
       });
 }
 
+async function postLoginTemp(dataForm: DataUser) {
+  await api
+  .post("/usuarios", dataForm, {
+    headers: {
+        "Content-Type": "application/json" 
+    },
+  })
+  .then((response) => {
+    return response;
+  })
+  .catch((erro) => {
+    alert("Ocorreu um erro na API:\n" + erro);
+    console.log(erro);
+  });
+}
+
 async function postLogin(dataForm: DataUser) {
     try {
       const {

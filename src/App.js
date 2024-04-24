@@ -1,17 +1,19 @@
-import logo from './logo.svg';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
+
 import Home from './components/Home/Home.tsx';
-import LognUp from './components/LognUp/LognUp.tsx';
+import SignUpForm from './components/LognUp/signUp/signUpForm.tsx';
+import LoginForm from './components/LognUp/login/loginForm.tsx';
 
 function App() {
   return (
-    <div className="container">
-      <div className='card-grid'>
-
-      <LognUp />
-
-      </div>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element ={<Home/>}/>
+      <Route path="/login" element ={<SignUpForm/>}/>
+      <Route path="/register" element ={<LoginForm/>}/>
+    </Routes>
+    </BrowserRouter>
   );
 }
 
