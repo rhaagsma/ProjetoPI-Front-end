@@ -4,10 +4,6 @@ import { SubmitSignUp } from "../../../services/context.tsx";
 import './singUpForm.css';
 import { Link } from "react-router-dom";
 
-import {
-    Grid
-} from "@mui/material";
-
 export default function SignUpForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -27,33 +23,33 @@ export default function SignUpForm() {
     }
 
     return (
-        <div className="register-container" id="register">
+    <div className="form-box">
+        <div className="container" id="register">
             <form onSubmit={sendSignUp}>
             <div className="top">
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/login">Already have an account? Login</Link>
-              </Grid>
-            </Grid>
-                <header>Sign Up</header>
-            </div>
-                <h1>Create Account</h1>
-                <div className="input-box">
-                    <input type="text" placeholder='Username' required onChange={e => setUsername(e.target.value)} />
-                    <i className="bx bx-user"></i>
-                </div>
-                <div className="input-box">
-                    <input type="email" placeholder='Email' required onChange={e => setEmail(e.target.value)} />
-                    <i className="bx bx-envelope"></i>
-                </div>
-                <div className="input-box">
-                    <input type="password" placeholder='Password' required onChange={e => setPassword(e.target.value)} />
-                    <i className="bx bx-lock-alt"></i>
-                </div>
 
-                <button type='submit'>Sign Up</button>
-            
+                
+                <header>Create Account</header>
+            </div>
+                
+                <div className="input-box">
+                    <input type="text" className="input-field" placeholder='Username' required onChange={e => setUsername(e.target.value)} />
+                    
+                </div>
+                <div className="input-box">
+                    <input type="email" className="input-field" placeholder='Email' required onChange={e => setEmail(e.target.value)} />
+                   
+                </div>
+                <div className="input-box">
+                    <input type="password" className="input-field" placeholder='Password' required onChange={e => setPassword(e.target.value)} />
+                    
+                </div>
+                <div className="submit">
+                    <button className="submit" type='submit'>Sign Up</button>
+                    <Link to="/login">Already have an account?</Link>
+                </div>
             </form>   
+        </div>
         </div>
     );
 }

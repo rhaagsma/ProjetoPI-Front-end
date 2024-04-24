@@ -2,9 +2,6 @@ import React from "react"
 import { useState } from "react";
 import './Home.css'
 import { DataUser } from "../Type/DataUser.ts";
-import SignUpForm from "../LognUp/signUp/signUpForm.tsx"
-import LoginForm from "../LognUp/login/loginForm.tsx"
-import { SubmitSignUp } from "../../services/context.tsx";
 
 
 const Home = () => {
@@ -29,13 +26,9 @@ const Home = () => {
         <div className="nav-menu-btn">
             <i className="bx bx-menu"></i>
         </div>
-    </nav>
-        <div className="form-box">
-        
-        
+    </nav>    
         
     </div>
-</div>
     )
     
     
