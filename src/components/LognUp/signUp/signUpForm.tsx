@@ -32,11 +32,10 @@ export default function SignUpForm() {
                 <div className="input-box">
                     <input type="password" placeholder='Password' required onChange={e => setPassword(e.target.value)} />
                 </div>
-                <div className="input-box">
-                    <input type="projetonome" placeholder='projetonome' required onChange={e => setprojetonome(e.target.value)} />
-                </div>
+
                 <button type='submit'>Sign Up</button>
             </form>   
         </div>
     );
 }
+sdasdasdasdasddas
