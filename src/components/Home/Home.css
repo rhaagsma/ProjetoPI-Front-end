@@ -9,8 +9,8 @@
 }
 
 body{
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background-color: #ecd2ff;
+    background: linear-gradient(to right, #9e7575, #58486d);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,7 +23,6 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 110vh;
-    background: rgba(39, 39, 39, 0.4);
 }
 .nav{
     position: fixed;
@@ -33,7 +32,7 @@ body{
     width: 100%;
     height: 100px;
     line-height: 100px;
-    background: linear-gradient(rgba(39,39,39, 0.6), transparent);
+    background: linear-gradient(rgba(39,39,39, 0.8), transparent);
     z-index: 100;
 }
 .nav-logo p{

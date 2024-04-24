@@ -12,7 +12,7 @@ export default function SignUpForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [projetonome, setprojetonome] = useState("");
+
     function sendSignUp(event) {
         event.preventDefault();
         

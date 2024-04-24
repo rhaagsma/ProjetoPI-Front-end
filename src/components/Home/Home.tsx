@@ -1,7 +1,6 @@
 import React from "react"
 import { useState } from "react";
 import './Home.css'
-import { Link } from "react-router-dom";
 import { DataUser } from "../Type/DataUser.ts";
 import SignUpForm from "../LognUp/signUp/signUpForm.tsx"
 import LoginForm from "../LognUp/login/loginForm.tsx"
@@ -9,24 +8,6 @@ import { SubmitSignUp } from "../../services/context.tsx";
 
 
 const Home = () => {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [projetonome, setprojetonome] = useState("");
-
-    function sendSignUp(event) {
-        //event.preventDefault();
-
-        const user: DataUser = {
-            nome: username,
-            email: email,
-            senha: password,
-        };
-
-        SubmitSignUp(user);
-    }
-
-
 
     return(
     <div className="wrapper">
@@ -43,10 +24,10 @@ const Home = () => {
             </ul>
         </div>
         <div className="nav-button">
-            <button className="btn white-btn" id="loginBtn">Sign In</button>
+            <a href="/login"><button className="btn white-btn" id="loginBtn" >Sign In</button></a>
         </div>
         <div className="nav-menu-btn">
-            <i className="bx bx-menu" onclick="myMenuFunction()"></i>
+            <i className="bx bx-menu"></i>
         </div>
     </nav>
         <div className="form-box">

@@ -3,26 +3,24 @@ import { useState } from 'react';
 import './loginForm.css';
 import { Link } from "react-router-dom";
 import { DataUser } from '../../Type/DataUser';
-import { SubmitSignUp } from '../../../services/context.tsx';
+import { SubmitLogin } from '../../../services/context.tsx';
 
 
 export default function LoginForm() {
 
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [projetonome, setprojetonome] = useState("");
 
     function sendLogin(event) {
         //event.preventDefault();
 
         const user: DataUser = {
             nome: username,
-            email: email,
+            email: username,
             senha: password,
         };
 
-        SubmitSignUp(user);
+        SubmitLogin(user);
     }
     return(
         <div className="form-box">
