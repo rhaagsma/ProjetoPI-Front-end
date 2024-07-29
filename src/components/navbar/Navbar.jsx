@@ -1,19 +1,27 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Navbar.css'
+import logo from "../assets/Disco logo.png"
+import carrinho from "../assets/carrinho.png"
 
 const Navbar = () => {
+    const[menu,setMenu] = useState("Home");
     return (
         <nav className="navbar">
-            <div className="navbar-brand">
-                <a href="#">Logo</a>
+            <div className="nav-logo">
+                <img src={logo} alt="Disco logo" href="#"/>
+                
             </div>
-            <div className="navbar-menu">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
+
+            <ul className="nav-menu">
+                    <li><a onClick={()=>{setMenu("Home")}}href="#">Home{menu==="Home"?<hr/>:<></>}</a></li>
+                    <li><a onClick={()=>{setMenu("About")}}href="#">About{menu==="About"?<hr/>:<></>}</a></li>
+                    <li><a onClick={()=>{setMenu("Services")}}href="#">Services{menu==="Services"?<hr/>:<></>}</a></li>
+                    <li><a onClick={()=>{setMenu("Contact")}}href="#">Contact{menu==="Contact"?<hr/>:<></>}</a></li>
+            </ul>
+            <div className="nav-login-cart">
+                <button>Login</button>
+                <img className='carrinho' src={carrinho} alt="carrinho" />
+                <div className="nav-cart-count">0</div>
             </div>
         </nav>
     )
