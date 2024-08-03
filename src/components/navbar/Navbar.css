@@ -21,8 +21,9 @@
     gap: 20px;
 }
 .nav-login-cart .carrinho {
-    width: 20%;
-    height: 90%;
+    display: flex;
+    width: 21%;
+    height: 10%;
 }
 .nav-menu{
     display: flex;

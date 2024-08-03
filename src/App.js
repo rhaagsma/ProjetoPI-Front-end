@@ -1,11 +1,31 @@
 import './App.css';
 import Navbar from './components/navbar/Navbar';
-
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Product from './pages/Product';
+import Cart from './pages/Cart';
+import LoginSignup from './pages/LoginSignup';
+import Category from './pages/Category';
 function App() {
   return (
     <div className="container">
-      <Navbar/>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+
+          {/*adicionar mais categorias*/}
+          <Route exact path="/banda" element={<Category category="banda"/>} />
+          
+          <Route path="/product" element={<Product/>}>
+            <Route path=':productId' element={<Product/>}/>
+          </Route>
+          
+          <Route path="/cart" element={<Cart/>}/>
+          <Route path="/login" element={<LoginSignup/>}/>
+          {/*adicionar mais rotas*/}
+        </Routes>
+      </BrowserRouter>
     </div>
    
   );
