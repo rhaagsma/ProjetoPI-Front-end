@@ -6,9 +6,11 @@ import Product from './pages/Product';
 import Cart from './pages/Cart';
 import LoginSignup from './pages/LoginSignup';
 import Category from './pages/Category';
+import Footer from './components/footer/Footer';
 function App() {
   return (
     <div className="container">
+      
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -25,6 +27,7 @@ function App() {
           <Route path="/login" element={<LoginSignup/>}/>
           {/*adicionar mais rotas*/}
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </div>
    

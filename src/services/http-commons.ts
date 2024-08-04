@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from "axios";
-import { DataUser } from "../components/Type/DataUser";
+import { DataUser } from "../components/type/DataUser";
 
 
 const api = axios.create({
