@@ -1,11 +1,25 @@
 import axios, { AxiosPromise } from "axios";
 import { DataUser } from "../components/type/DataUser";
-
+import { DataProduct, band, genre, category } from "../components/type/DataProduct";
 
 const api = axios.create({
     baseURL: `http://localhost:8080/api`,
-  });
+});
 
+
+
+                  {/*Product api */}
+async function getAllProduct(){
+  return await api
+    .get("/product", {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
+
+
+                  {/*User api */}
 async function saveUsuario(dataForm: DataUser) {
     await api
       .post("/usuarios", dataForm, {
@@ -48,4 +62,4 @@ async function postLogin(dataForm: DataUser) {
   }
 
 
-export {saveUsuario, postLogin}
+export {saveUsuario, postLogin, getAllProduct}

@@ -13,5 +13,5 @@ export type ContextType = {
   SubmitRegister: (data: DataUser) => Promise<void | AxiosResponse>;
   SubmitLogin: (data: DataUser) => Promise<void | AxiosResponse>;
   authenticated: boolean;
-  GetAllPoint: () => Promise<void | AxiosResponse>;
+  GetAllProduct: () => Promise<void | AxiosResponse>;
 };

@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap:50px;
+    gap: 50px;
 
 }
 .footer-logo{
@@ -36,13 +36,6 @@
 
 }
 
-.footer-icons-container{
-    padding: 10px;
-    padding-bottom: 6px;
-    background: #fbfbfb;
-    border: 1px solid #ebebeb;
-
-}
 
 .footer-copyright{
     display: flex;

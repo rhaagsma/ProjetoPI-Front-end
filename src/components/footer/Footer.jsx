@@ -19,11 +19,12 @@ const Footer = () => {
                 <div className="footer-icons-container">
 
                 </div>
-                <div className="footer-copyright">
-                    <hr />
-                    <p>Copyright @ 2024 - All Right Reserved</p>
                 </div>
+            <div className="footer-copyright">
+                <hr />
+                <p>Copyright @ 2024 - All Right Reserved</p>
             </div>
+            
         </div>
     )
 }
