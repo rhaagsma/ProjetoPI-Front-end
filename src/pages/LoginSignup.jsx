@@ -1,15 +1,26 @@
-import React from "react";
-
+import React, { useState } from 'react';
+import { Button, Checkbox, Form } from 'semantic-ui-react'
+    
 const LoginSignup = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [checkbox, setCheckbox] = useState(false);
     return (
         <div>
-            <h1>Login/Signup</h1>
-            <form>
-                <input type="text" placeholder="Username" />
-                <input type="password" placeholder="Password" />
-                <button type="submit">Login</button>
-                <button type="submit">Signup</button>
-            </form>
+            <Form className="create-form">
+                <Form.Field>
+                    <label>First Name</label>
+                    <input placeholder='First Name' />
+                </Form.Field>
+                <Form.Field>
+                    <label>Last Name</label>
+                    <input placeholder='Last Name' />
+                </Form.Field>
+                <Form.Field>
+                    <Checkbox label='I agree to the Terms and Conditions' />
+                </Form.Field>
+                <Button type='submit'>Submit</Button>
+            </Form>
         </div>
     )
 }

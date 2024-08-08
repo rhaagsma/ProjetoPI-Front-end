@@ -7,20 +7,20 @@ export type DataProduct = {
     category: number;
 }
 
-export type band = {
+export type Band = {
     id?: number;
     name: string;
     genre: Array<number>;
     products: Array<DataProduct>;
 }
 
-export type genre = {
+export type Genre = {
     id?: number;
     name: string;
     bandlist: Array<number>;
 }
 
-export type category = {
+export type Category = {
     id?: number;
     name: string;
 }
