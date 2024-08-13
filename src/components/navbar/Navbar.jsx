@@ -19,7 +19,7 @@ const Navbar = () => {
                     <li onClick={()=>{setMenu("Home")}}><Link style={{ textDecoration: "none"}}to="/">Home</Link>{menu==="Home"?<hr/>:<></>}</li>
                     <li onClick={()=>{setMenu("Banda")}}><Link style={{ textDecoration: "none"}} to="/Banda">Banda</Link>{menu==="Banda"?<hr/>:<></>}</li>
                     {/*aqui pra baixo é apenas uma demonstração*/}
-                    <li onClick={()=>{setMenu("Services")}}><Link style={{ textDecoration: "none"}} to="/">Services</Link>{menu==="Services"?<hr/>:<></>}</li>
+                    <li onClick={()=>{setMenu("Services")}}><Link style={{ textDecoration: "none"}} to="/Category">Category</Link>{menu==="Category"?<hr/>:<></>}</li>
                     <li onClick={()=>{setMenu("Contact")}}><Link style={{ textDecoration: "none"}} to="/">Contact</Link>{menu==="Contact"?<hr/>:<></>}</li>
             </ul>
             <div className="nav-login-cart">

@@ -2,7 +2,13 @@ import React, { createContext, useState, useContext } from 'react';
 
 import { useNavigate } from 'react-router-dom'
 import { DataUser, AuxProps, ContextType } from '../components/type/DataUser';
-import { getAllProduct, postLogin, saveUsuario } from './http-commons';
+import { register,
+          login,
+          getAllProduct,
+          getAllBands,
+          getAllGenres,
+          getAllCategories,
+        } from './http-commons.ts';
 
 const Context = createContext({} as ContextType);
 
@@ -13,13 +19,13 @@ function AuthProvider({ children }: AuxProps) {
   
     
   async function SubmitRegister(data: DataUser) {
-    saveUsuario(data);
+    register(data);
   }
 
  
   async function SubmitLogin(data: DataUser) {
-     //salvamos a resposta da funçao "postLogin" em uma constante e validamos se existe um "token"
-    const responseData:any = await postLogin(data);
+     //salvamos a resposta da funçao "submitLogin" em uma constante e validamos se existe um "token"
+    const responseData:any = await login(data);
     if (responseData?.token) {
         //o "token" é armazenado no "localStorage" e o usuário é definido como autenticado.
         localStorage.setItem('token', responseData.token);
@@ -29,8 +35,8 @@ function AuthProvider({ children }: AuxProps) {
       }
   }
 
-  async function GetAllProduct(){
-    getAllProduct();
+  async function GetAllProduct(){ 
+    await getAllProduct();
   }
 
   return (
@@ -43,4 +49,6 @@ function AuthProvider({ children }: AuxProps) {
 const useAuth = () => {
   return useContext(Context)
 }
+
+
 export { Context, AuthProvider , useAuth};

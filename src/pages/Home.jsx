@@ -6,8 +6,6 @@ import Offers from "../components/offers/Offers"
 const Home = () => {
     return (
         <div className="home-container">
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the Home Page component.</p>
             <Hero/>
             <Popular/>
             <Offers/>
