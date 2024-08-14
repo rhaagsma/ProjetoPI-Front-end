@@ -18,7 +18,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
 
           {/*adicionar mais categorias*/}
-          <Route exact path="/banda" element={<Category pageName="banda"/>} />
+          <Route exact path="/banda" element={<Category pageName="Bandas"/>} />
           
           <Route path="/product" element={<Product/>}>
             <Route path=':productId' element={<Product/>}/>
