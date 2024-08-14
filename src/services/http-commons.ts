@@ -3,7 +3,7 @@ import { DataUser } from "../components/type/DataUser";
 import { DataProduct, Band, Genre, Category } from "../components/type/DataProduct";
 
 const api = axios.create({
-    baseURL: `http://localhost:8080/api`,
+    baseURL: `http://localhost:8081/api`,
 });
 
 // Product API
@@ -52,7 +52,7 @@ async function deleteProduct(id: number) {
 }
 
 // User API
-async function saveUsuario(dataForm: DataUser) {
+async function register(dataForm: DataUser) {
   return await api
     .post("/usuarios", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -64,7 +64,7 @@ async function saveUsuario(dataForm: DataUser) {
     });
 }
 
-async function postLogin(dataForm: DataUser) {
+async function login(dataForm: DataUser) {
   try {
     const { data: { token } } = await api.post("/login", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -223,8 +223,8 @@ async function deleteCategory(id: number) {
 }
 
 export {
-  saveUsuario,
-  postLogin,
+  register,
+  login,
   getAllProduct,
   saveProduct,
   updateProduct,

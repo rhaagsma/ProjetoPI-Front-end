@@ -5,13 +5,14 @@ export type DataProduct = {
     description: string;
     price: Float32Array;
     category: number;
+    band: Band;
 }
 
 export type Band = {
     id?: number;
     name: string;
     genre: Array<number>;
-    products: Array<DataProduct>;
+    productlist: Array<number>;
 }
 
 export type Genre = {
