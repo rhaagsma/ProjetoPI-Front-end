@@ -6,19 +6,19 @@ import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
 import LoginSignup from './pages/LoginSignup';
-import Category from './pages/Category';
+import Products from './pages/Products';
 import Footer from './components/footer/Footer';
 import PrivateRoute from './services/PrivateRoute';
-import { AuthProvider } from './services/context.tsx';
+import { AuthProvider } from './services/context';
 
 function App() {
   return (
     <AuthProvider>
-        <div className="App">
+        <div className="App bg-slate-200">
           <Navbar />
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/banda" element={<Category pageName="Banda"/>} />
+            <Route exact path="/banda" element={<Products pageName="Banda"/>} />
             <Route path="/product" element={<Product/>}>
               <Route path=':productId' element={<Product/>}/>
             </Route>
@@ -32,7 +32,7 @@ function App() {
             }/>
 
             {/*adicionar mais categorias*/}
-            <Route exact path="/banda" element={<Category pageName="Bandas"/>} />
+            <Route exact path="/banda" element={<Products pageName="Bandas"/>} />
           </Routes>
           <Footer/>
       </div>

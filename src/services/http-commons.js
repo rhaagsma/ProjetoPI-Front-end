@@ -1,9 +1,9 @@
 import axios from "axios";
-import { DataUser } from "../components/type/DataUser";
-import { DataProduct, Band, Genre, Category } from "../components/type/DataProduct";
+// import { DataUser } from "../components/type/DataUser";
+// import { DataProduct, Band, Genre, Category } from "../components/type/DataProduct";
 
 const api = axios.create({
-    baseURL: `http://localhost:8081/api`,
+  baseURL: `http://localhost:8081`,
 });
 
 // Product API
@@ -15,7 +15,7 @@ async function getAllProduct() {
     .then((response) => response.data);
 }
 
-async function saveProduct(dataForm: DataProduct) {
+async function saveProduct(dataForm) {
   return await api
     .post("/product", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ async function saveProduct(dataForm: DataProduct) {
     });
 }
 
-async function updateProduct(dataForm: DataProduct) {
+async function updateProduct(dataForm) {
   return await api
     .put("/product", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -39,7 +39,7 @@ async function updateProduct(dataForm: DataProduct) {
     });
 }
 
-async function deleteProduct(id: number) {
+async function deleteProduct(id) {
   return await api
     .delete(`/product/${id}`, {
       headers: { "Content-Type": "application/json" },
@@ -52,7 +52,7 @@ async function deleteProduct(id: number) {
 }
 
 // User API
-async function register(dataForm: DataUser) {
+async function register(dataForm) {
   return await api
     .post("/usuarios", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -64,13 +64,13 @@ async function register(dataForm: DataUser) {
     });
 }
 
-async function login(dataForm: DataUser) {
+async function login(dataForm) {
   try {
     const { data: { token } } = await api.post("/login", dataForm, {
       headers: { "Content-Type": "application/json" },
     });
     return { token };
-  } catch (error: unknown) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
       switch (error.response?.data) {
         case "Cannot find user":
@@ -96,7 +96,7 @@ async function getAllBands() {
     .then((response) => response.data);
 }
 
-async function saveBand(dataForm: Band) {
+async function saveBand(dataForm) {
   return await api
     .post("/bands", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -108,7 +108,7 @@ async function saveBand(dataForm: Band) {
     });
 }
 
-async function updateBand(dataForm: Band) {
+async function updateBand(dataForm) {
   return await api
     .put("/bands", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -120,7 +120,7 @@ async function updateBand(dataForm: Band) {
     });
 }
 
-async function deleteBand(id: number) {
+async function deleteBand(id) {
   return await api
     .delete(`/bands/${id}`, {
       headers: { "Content-Type": "application/json" },
@@ -141,7 +141,7 @@ async function getAllGenres() {
     .then((response) => response.data);
 }
 
-async function saveGenre(dataForm: Genre) {
+async function saveGenre(dataForm) {
   return await api
     .post("/genres", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -153,7 +153,7 @@ async function saveGenre(dataForm: Genre) {
     });
 }
 
-async function updateGenre(dataForm: Genre) {
+async function updateGenre(dataForm) {
   return await api
     .put("/genres", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -165,7 +165,7 @@ async function updateGenre(dataForm: Genre) {
     });
 }
 
-async function deleteGenre(id: number) {
+async function deleteGenre(id) {
   return await api
     .delete(`/genres/${id}`, {
       headers: { "Content-Type": "application/json" },
@@ -186,7 +186,7 @@ async function getAllCategories() {
     .then((response) => response.data);
 }
 
-async function saveCategory(dataForm: Category) {
+async function saveCategory(dataForm) {
   return await api
     .post("/categories", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -198,7 +198,7 @@ async function saveCategory(dataForm: Category) {
     });
 }
 
-async function updateCategory(dataForm: Category) {
+async function updateCategory(dataForm) {
   return await api
     .put("/categories", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -210,7 +210,7 @@ async function updateCategory(dataForm: Category) {
     });
 }
 
-async function deleteCategory(id: number) {
+async function deleteCategory(id) {
   return await api
     .delete(`/categories/${id}`, {
       headers: { "Content-Type": "application/json" },
