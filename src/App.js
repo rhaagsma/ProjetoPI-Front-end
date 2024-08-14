@@ -1,4 +1,5 @@
 import './App.css';
+import './globals.css';
 import Navbar from './components/navbar/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
@@ -9,7 +10,7 @@ import Category from './pages/Category';
 import Footer from './components/footer/Footer';
 function App() {
   return (
-    <div className="container">
+    <div>
       
       <BrowserRouter>
         <Navbar />
@@ -17,7 +18,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
 
           {/*adicionar mais categorias*/}
-          <Route exact path="/banda" element={<Category category="banda"/>} />
+          <Route exact path="/banda" element={<Category pageName="banda"/>} />
           
           <Route path="/product" element={<Product/>}>
             <Route path=':productId' element={<Product/>}/>
