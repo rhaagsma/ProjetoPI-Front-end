@@ -3,33 +3,35 @@ import './Navbar.css'
 import logo from "../assets/Disco logo.png"
 import carrinho from "../assets/carrinho.png"
 import { Link } from 'react-router-dom'
+import { ShoppingCart } from 'lucide-react'
 
 const Navbar = () => {
     const[menu,setMenu] = useState("Home");
     
     return (
-        <nav className="navbar">
-            <div className="nav-logo">
-                <img src={logo} alt="Disco logo"/>
-                
-            </div>
+        <nav className="w-full bg-[#21242D] flex items-center justify-center px-4 py-2">
+            <div className="max-w-7xl flex items-center justify-between w-full">
+                <div className="w-44">
+                    <img src={logo} alt="Disco logo"/>
+                    
+                </div>
 
-            <ul className="nav-menu">
-                {/*adicionar as categorias*/}
-                    <li onClick={()=>{setMenu("Home")}}><Link style={{ textDecoration: "none"}}to="/">Home</Link>{menu==="Home"?<hr/>:<></>}</li>
-                    <li onClick={()=>{setMenu("Banda")}}><Link style={{ textDecoration: "none"}} to="/Banda">Banda</Link>{menu==="Banda"?<hr/>:<></>}</li>
-                    {/*aqui pra baixo é apenas uma demonstração*/}
-                    <li onClick={()=>{setMenu("Services")}}><Link style={{ textDecoration: "none"}} to="/Category">Category</Link>{menu==="Category"?<hr/>:<></>}</li>
-                    <li onClick={()=>{setMenu("Contact")}}><Link style={{ textDecoration: "none"}} to="/">Contact</Link>{menu==="Contact"?<hr/>:<></>}</li>
-            </ul>
-            <div className="nav-login-cart">
-                
-                {/*link para a página de login*/}
-                <Link to='/login'><button>Login</button></Link>
-                
-                <Link to='/cart'><img className='carrinho' src={carrinho} alt="carrinho" /></Link>
-                {/*To do: trocar a imagem de carrinho e editar o css*/}
-                <div className="nav-cart-count">0</div>
+                <ul className="flex w-fit gap-4">
+                    {/*adicionar as categorias*/}
+                        <li onClick={()=>{setMenu("Home")}}><Link className= "text-white font-semibold"style={{ textDecoration: "none"}}to="/">Home</Link>{menu==="Home"?<hr/>:<></>}</li>
+                        <li onClick={()=>{setMenu("Banda")}}><Link className= "text-white font-semibold"style={{ textDecoration: "none"}} to="/Banda">Banda</Link>{menu==="Banda"?<hr/>:<></>}</li>
+                        {/*aqui pra baixo é apenas uma demonstração*/}
+                        <li onClick={()=>{setMenu("Services")}}><Link className= "text-white font-semibold"style={{ textDecoration: "none"}} to="/">Services</Link>{menu==="Services"?<hr/>:<></>}</li>
+                        <li onClick={()=>{setMenu("Contact")}}><Link className= "text-white font-semibold"style={{ textDecoration: "none"}} to="/">Contact</Link>{menu==="Contact"?<hr/>:<></>}</li>
+                </ul>
+                <div className="w-44 flex gap-4 items-center justify-end">
+                    
+                    {/*link para a página de login*/}
+                    <Link to='/login'><button className='px-4 py-2 flex rounded-full items-center justify-center bg-white'>Login</button></Link>
+                    
+                    <Link to='/cart'><ShoppingCart className='w-8 h-8 text-white' src={carrinho} alt="carrinho" /></Link>
+                    {/*To do: trocar a imagem de carrinho e editar o css*/}
+                </div>
             </div>
         </nav>
     )
