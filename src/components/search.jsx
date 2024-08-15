@@ -1,14 +1,19 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
+import { Input } from './ui/input';
 
 //type LayoutProps = {
 //    children: ReactNode;
 //}
 
-const Search = ({ pageName }) => {
+const Search = ({ pageName, text, setText }) => {
     return (
-        <div className='my-24 w-full flex items-center justify-center'>
-            <h1 className='text-3xl font-semibold mb-4'>{pageName}</h1>
-            
+        <div className='flex items-center gap-4 mb-4'>
+            <h1 className='text-3xl font-semibold'>{pageName}</h1>
+            {/* <Input 
+                placeholder='Busque produtos aqui' 
+                value={text} 
+                onChange={(e) => setText(e.target.value)}
+            /> */}
         </div>
     )
 }

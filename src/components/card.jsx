@@ -1,15 +1,17 @@
 import React, { ReactNode, useState } from 'react';
 import { Button } from './ui/button';
+import {useNavigate} from 'react-router-dom';
 
 //type LayoutProps = {
 //    children: ReactNode;
 //}
 
-const Card = ({image, name, price}) => {
+const Card = ({id, image, name, price}) => {
+    const router = useNavigate();
     const [isHover, setIsHover] = useState(false)
 
     const handleClick = () => {
-        alert("é os Guri")
+        router(`/product/${id}`)
     }
 
     return (

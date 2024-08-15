@@ -23,10 +23,10 @@ const Products = ({pageName}) => {
 
     return (
         <Layout>
-            <Search><h1>MOIE</h1></Search>
+            <Search pageName="Bandas"/>
             <div className='grid grid-cols-4 gap-4'>
-                {data?.map(el => <Card image={el.image} name={el.name} price={el.price}/>)}
-                {!data?.length ? <p>Nenhum produto encontrado</p> : null}
+                {data.map(el => <Card id={el.id} image={el.image} name={el.name} price={el.price}/>)}
+                {!data.length ? <p>Nenhum produto encontrado</p> : null}
             </div>
         </Layout>
     )

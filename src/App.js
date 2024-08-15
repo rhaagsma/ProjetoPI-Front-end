@@ -26,9 +26,7 @@ function App() {
 
             
             <Route path="/cart" element={
-              <PrivateRoute>
                 <Cart />
-              </PrivateRoute>
             }/>
 
             {/*adicionar mais categorias*/}
