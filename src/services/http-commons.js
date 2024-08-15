@@ -53,22 +53,24 @@ async function deleteProduct(id) {
 
 // User API
 async function register(dataForm) {
-  return await api
-    .post("/usuarios", dataForm, {
+  try {
+    const response = await api.post("/auth/register", dataForm, {
       headers: { "Content-Type": "application/json" },
-    })
-    .then((response) => response)
-    .catch((error) => {
-      alert("Ocorreu um erro na API:\n" + error);
-      console.log(error);
     });
+    return response;
+  } catch (error) {
+    alert("Ocorreu um erro na API:\n" + error);
+    console.log(error);
+    return null;
+  }
 }
 
 async function login(dataForm) {
   try {
-    const { data: { token } } = await api.post("/login", dataForm, {
+    const response = await api.post("/auth/login", dataForm, {
       headers: { "Content-Type": "application/json" },
     });
+    const token = response.data?.token ?? null;
     return { token };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -82,11 +84,13 @@ async function login(dataForm) {
         default:
           alert("Ocorreu um erro na API:\n" + error);
       }
+    } else {
+      alert("Ocorreu um erro inesperado:\n" + error);
     }
     console.log(error);
+    return null;
   }
 }
-
 // Band API
 async function getAllBands() {
   return await api
