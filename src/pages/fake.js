@@ -8,3 +8,14 @@ export const values = [{
         name: 'Blusa'
     } 
 }]
+
+export const values2 = [{ 
+    id: '857dbb55-5e63-4abb-a77e-d7600caf1368',
+    name: 'Blusa joia2',
+    image: 'https://mariafilo.vtexassets.com/arquivos/ids/299775/1502202_019_3-BLUSA-CROPPED-ESTAMPA-JOIA.jpg?v=637611006211130000',
+    description: 'tão legal quanto a outra',
+    price: 101.5,
+    category: {
+        name: 'Blusa'
+    } 
+}]

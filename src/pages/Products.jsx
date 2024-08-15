@@ -1,7 +1,7 @@
 import Card from 'src/components/card';
 import Layout from 'src/components/layout';
 import React, { useEffect, useState } from 'react';
-import { values } from './fake';
+import { values, values2 } from './fake';
 import { getAllProduct } from 'src/services/http-commons';
 import Search from 'src/components/search';
 
@@ -13,7 +13,7 @@ const Products = ({pageName}) => {
             const res = await getAllProduct()
             setData(res)
         } catch (error) {
-            setData(values);   
+            setData(values,values2);   
         }
     }
 

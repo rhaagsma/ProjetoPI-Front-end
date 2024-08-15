@@ -15,6 +15,14 @@ async function getAllProduct() {
     .then((response) => response.data);
 }
 
+async function getProduct(id) {
+  return await api
+    .get(`/product/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
 async function saveProduct(dataForm) {
   return await api
     .post("/product", dataForm, {
@@ -226,6 +234,7 @@ export {
   register,
   login,
   getAllProduct,
+  getProduct,
   saveProduct,
   updateProduct,
   deleteProduct,
