@@ -30,7 +30,7 @@ function AuthProvider({ children }) {
         localStorage.setItem('token', responseData.token);
         setAuthenticated(true);
     
-        navigate('/admin')
+        navigate('/')
       }
   }
 
