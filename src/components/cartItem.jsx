@@ -1,36 +1,67 @@
 import React, { ReactNode, useState } from 'react';
 import { Button } from './ui/button';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Minus, Plus, Trash } from 'lucide-react';
+import { Input } from './ui/input';
 
 //type LayoutProps = {
 //    children: ReactNode;
 //}
 
-const CartItem = ({id, image, name, price}) => {
+const CartItem = ({ id, image, name, description, price }) => {
     const router = useNavigate();
     const [isHover, setIsHover] = useState(false)
+    const [qtd, setQtd] = useState(1);
 
     const handleClick = () => {
-        
+
     }
 
+    function changeProductQtd(value) {
+        if(typeof window !== 'undefined') {
+            const exists = localStorage.getItem("productsCart") 
+            if (exists) {
+                const JSONCart = JSON.parse(exists)
+                const FindProduct = JSONCart.findIndex((el) => el.id === id)
+                if (FindProduct) {
+                    JSONCart[FindProduct].qtd = value
+                    localStorage.setItem("productsCart", JSON.stringify(JSONCart))
+                }
+            }
+        }
+    
+        setQtd(value)
+    }
+    
+    
+
     return (
-        <div 
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-            className='w-full h-[27rem] rounded-md shadow-lg p-4 flex flex-col gap-4 items-center justify-between
-            bg-white'
-        >
-            <img src={image} alt={name} className='w-full min-h-[70%] rounded-md bg-slate-200 object-cover'/>
-            <h1 className='font-semibold text-xl'>{name}</h1>
-            <h3 className='text-3xl h-full flex items-center justify-center font-bold'>R${price}</h3>
-            { isHover ? (
-                <div className='absolute p-4 bottom-0 w-full'>
-                    <Button className='w-full cursor-pointer' onClick={handleClick} >Ver produto</Button>
+        <div className='flex w-full p-4 bg-white'>
+            <div className='w-[50%] flex items-center justify-start gap-4'>
+                <img className='w-24 h-24 rounded object-cover' src={image} alt={name} />
+                <div className='flex flex-col gap-2'>
+                    <h1 className='text-lg font-semibold'>{name}</h1>
+                    <p className='text-slate-500 text-sm'>{description}</p>
                 </div>
-            )
-             : null }
+            </div>
+            <div className='w-[12.5%] flex items-center justify-start'>
+                <h1>{price}</h1>
+            </div>
+            <div className='w-[12.5%] flex items-center justify-start'>
+                <div className='flex w-full items-center justify-between pr-12'>
+                    <Input type="number" value={qtd} min={1} onChange={(e) => changeProductQtd(e.target.value)}/>
+                </div>
+            </div>
+            <div className='w-[12.5%] flex items-center justify-start'>
+                <h1>{price}</h1> {/* falta multiplicar pela quantidade */}
+            </div>
+            <div className='w-[12.5%] flex items-center justify-start'>
+                <Button variant="ghost" className='' Excluir>
+                    <Trash size={20} className='text-red-600'></Trash>
+                </Button>
+            </div>
         </div>
+
     )
 }
 

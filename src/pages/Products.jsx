@@ -5,7 +5,7 @@ import { values, values2 } from './fake';
 import { getAllProduct } from 'src/services/http-commons';
 import Search from 'src/components/search';
 
-const Products = ({pageName}) => {
+const Products = () => {
     const [data, setData] = useState([]);
 
     async function initialize() {
