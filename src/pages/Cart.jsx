@@ -3,14 +3,23 @@ import React, { useEffect, useState } from 'react';
 import CartItem from 'src/components/cartItem';
 import { Button } from 'src/components/ui/button';
 import FooterCart from 'src/components/footerCart';
+import { useAuth } from 'src/services/context';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = ({pageName}) => {
+    const { authenticated } = useAuth();
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
 
     async function initialize() {
         try {
             const exists = localStorage.getItem("productsCart")
             const res = exists ? JSON.parse(exists) : []
+
+            const total = res.reduce((acc, el) => acc + el.price * el.qtd, 0)
+            setTotalPrice(total)
+
             setData(res)
         } catch (error) {
             setData([]);   
@@ -23,6 +32,19 @@ const Cart = ({pageName}) => {
         let newCart = JSONCart.filter(el => el.id !== id)
         localStorage.setItem("productsCart", JSON.stringify(newCart))
         setData(newCart)
+    }
+
+    async function finalize() {
+        if (authenticated) {
+            try {
+                alert('Compra finalizada com sucesso')
+                localStorage.removeItem("productsCart")
+            } catch (error) {
+                alert('Erro ao finalizar compra')
+            }
+        } else {
+            navigate('/login')
+        }
     }
 
     useEffect(() => {
@@ -67,8 +89,8 @@ const Cart = ({pageName}) => {
                     {!data.length ? <p>Nenhum produto encontrado</p> : null}
                 </div>
 
-                <FooterCart totalPrice={100}/>
-                <div className="flex items-center justify-end">
+                <FooterCart totalPrice={totalPrice}/>
+                <div className="flex items-center justify-end" onClick={finalize}>
                     <Button className="w-fit">Finalizar compra</Button>
                 </div>
             </div>
