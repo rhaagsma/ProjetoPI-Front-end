@@ -16,7 +16,7 @@ const LoginSignup = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await SubmitLogin({ login: loginName, password: loginPassword });
+            const response = await SubmitLogin({ login: loginName,password: loginPassword });
 
             console.log(response.data);
         } catch (error) {
@@ -27,11 +27,12 @@ const LoginSignup = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await SubmitRegister({ login: registerName, password: registerPassword });
-
-            console.log(response.data);
+            const user = { login: registerName, password: registerPassword };
+            const response = await SubmitRegister(user);
+            console.log(user);
+            console.log(response);
+            window.alert("Registration successful!");
         } catch (error) {
-
             console.error(error);
         }
     };

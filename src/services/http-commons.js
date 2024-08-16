@@ -6,6 +6,16 @@ const api = axios.create({
   baseURL: `http://localhost:8081`,
 });
 
+api.interceptors.request.use(async (config) => {
+
+  const token = localStorage.getItem("token");
+
+  if (token && config.headers) {
+    config.headers.authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Product API
 async function getAllProduct() {
   return await api
@@ -35,9 +45,9 @@ async function saveProduct(dataForm) {
     });
 }
 
-async function updateProduct(dataForm) {
+async function updateProduct(id, dataForm) {
   return await api
-    .put("/product", dataForm, {
+    .put(`/product${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -60,7 +70,16 @@ async function deleteProduct(id) {
 }
 
 // User API
+
+async function getUser(id) {
+  return await api
+    .get(`/auth/users/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
 async function register(dataForm) {
+  console.log(dataForm);
   try {
     const response = await api.post("/auth/register", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -68,7 +87,7 @@ async function register(dataForm) {
     return response;
   } catch (error) {
     alert("Ocorreu um erro na API:\n" + error);
-    console.log(error);
+    
     return null;
   }
 }
@@ -79,7 +98,8 @@ async function login(dataForm) {
       headers: { "Content-Type": "application/json" },
     });
     const token = response.data?.token ?? null;
-    return { token };
+    const userid = response.data?.id ?? null;
+    return { token, userid };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       switch (error.response?.data) {
@@ -98,6 +118,28 @@ async function login(dataForm) {
     console.log(error);
     return null;
   }
+}
+async function deleteUser(id) {
+  return await api
+   .delete(`/auth/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+   .then((response) => response)
+   .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
+async function updateUser(id, dataForm) {
+  return await api
+   .put(`/auth/${id}`, dataForm,{
+      headers: { "Content-Type": "application/json" },
+    })
+   .then((response) => response)
+   .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
 }
 // Band API
 async function getAllBands() {
@@ -120,9 +162,9 @@ async function saveBand(dataForm) {
     });
 }
 
-async function updateBand(dataForm) {
+async function updateBand(id, dataForm) {
   return await api
-    .put("/bands", dataForm, {
+    .put(`/bands${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -165,9 +207,9 @@ async function saveGenre(dataForm) {
     });
 }
 
-async function updateGenre(dataForm) {
+async function updateGenre(id, dataForm) {
   return await api
-    .put("/genres", dataForm, {
+    .put(`/genres${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -210,9 +252,9 @@ async function saveCategory(dataForm) {
     });
 }
 
-async function updateCategory(dataForm) {
+async function updateCategory(id, dataForm) {
   return await api
-    .put("/categories", dataForm, {
+    .put(`/categories${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -237,6 +279,9 @@ async function deleteCategory(id) {
 export {
   register,
   login,
+  deleteUser,
+  getUser,
+  updateUser,
   getAllProduct,
   getProduct,
   saveProduct,
