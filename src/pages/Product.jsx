@@ -23,47 +23,32 @@ const Product = ({ id, name }) => {
             setProduct(values.filter(el => el.id === productId)[0])
         }
     }
-
-    function buy() {
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-            alert(`Enviado para o carrinho! (${qtd}x)`)
-        }, 2000)
-    }
-    
+      
     useEffect(() => {
         getOneProduct()
     }, [productId])
 
-
-    const toSave = {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        image: product.image,
-        qtd: 1,
-        price: product.price
-    }
-
-    const exists = localStorage.getItem("productsCart")
-    let JSONCart = exists ? JSON.parse(exists) : []
-
-    localStorage.setItem("productsCart", JSON.stringify(toSave))
+    function buy() {
+        setLoading(true)
+        const toSave = {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            image: product.image,
+            qtd: qtd,
+            price: product.price
+        }
     
+        const exists = localStorage.getItem("productsCart")
+        let JSONCart = exists ? JSON.parse(exists) : []
+    
+        localStorage.setItem("productsCart", JSON.stringify([...JSONCart, toSave]))
 
-    const NewCartProduct = {
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        image: product.image,
-        qtd: 1,
-        price: product.price
+        setTimeout(() => {
+            setLoading(false)
+            alert('Produto adicionado ao carrinho')
+        }, 2000)
     }
-
-    JSONCart = JSON.parse(exists)
-    const newCart = [...JSONCart, NewCartProduct]
-    localStorage.setItem("productsCart", JSON.stringify(newCart))
 
 
     return (
