@@ -46,12 +46,6 @@ const Product = ({ id, name }) => {
         price: product.price
     }
 
-    const exists = localStorage.getItem("productsCart")
-    let JSONCart = exists ? JSON.parse(exists) : []
-
-    localStorage.setItem("productsCart", JSON.stringify(toSave))
-    
-
     const NewCartProduct = {
         id: product.id,
         name: product.name,
@@ -60,10 +54,15 @@ const Product = ({ id, name }) => {
         qtd: 1,
         price: product.price
     }
+    const exists = localStorage.getItem("productsCart");
+    let JSONCart = exists ? JSON.parse(exists) : [];
 
-    JSONCart = JSON.parse(exists)
-    const newCart = [...JSONCart, NewCartProduct]
-    localStorage.setItem("productsCart", JSON.stringify(newCart))
+    if (!Array.isArray(JSONCart)) {
+        JSONCart = [JSONCart];
+    }
+
+    JSONCart.push(toSave);
+    localStorage.setItem("productsCart", JSON.stringify(JSONCart));
 
 
     return (
