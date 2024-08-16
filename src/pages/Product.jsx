@@ -49,6 +49,8 @@ const Product = ({ id, name }) => {
             alert('Produto adicionado ao carrinho')
         }, 2000)
     }
+    const exists = localStorage.getItem("productsCart");
+    let JSONCart = exists ? JSON.parse(exists) : [];
 
 
     return (
