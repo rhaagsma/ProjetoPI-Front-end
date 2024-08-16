@@ -10,7 +10,7 @@ import Products from './pages/Products';
 import Footer from './components/footer/Footer';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/context';
-
+import Profile from './pages/Profile';
 function App() {
   return (
     <AuthProvider>
@@ -23,8 +23,8 @@ function App() {
               <Route path=':productId' element={<Product/>}/>
             </Route>
             <Route path="/login" element={<LoginSignup/>}/>
+            <Route path="/profile" element={<Profile/>}/>
 
-            
             <Route path="/cart" element={
                 <Cart />
             }/>

@@ -15,8 +15,8 @@ function AuthProvider({ children }) {
 
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(false);
-  
-    
+
+
   async function SubmitRegister(data) {
     register(data);
   }
@@ -25,13 +25,18 @@ function AuthProvider({ children }) {
   async function SubmitLogin(data) {
      //salvamos a resposta da funçao "submitLogin" em uma constante e validamos se existe um "token"
     const responseData = await login(data);
-    if (responseData?.token) {
+      if (responseData?.token && responseData?.userid) {
+       
         //o "token" é armazenado no "localStorage" e o usuário é definido como autenticado.
         localStorage.setItem('token', responseData.token);
+        localStorage.setItem('userId', responseData.userid);
         setAuthenticated(true);
-    
-        navigate('/admin')
+        navigate('/');
       }
+      else {
+        alert('Falha na autenticação');
+      }
+    
   }
 
   async function GetAllProduct(){ 
