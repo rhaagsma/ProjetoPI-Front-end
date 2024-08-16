@@ -2,6 +2,7 @@ import Card from 'src/components/card';
 import Layout from 'src/components/layout';
 import React, { useEffect, useState } from 'react';
 import { values } from './fake';
+import CartItem from 'src/components/cartItem';
 
 const Cart = ({pageName}) => {
     const [data, setData] = useState([]);
@@ -20,14 +21,14 @@ const Cart = ({pageName}) => {
     }, [data])
 
 
-const Cart = () => {
     return (
-        <div className='grid grid-cols-4 gap-4'>
-                {data.map(el => <Card id={el.id} image={el.image} name={el.name} price={el.price}/>)}
+        <Layout>
+        <div className='grid grid-cols-1 gap-4'>
+                {data.map(el => <CartItem id={el.id} image={el.image} name={el.name} price={el.price}/>)}
                 {!data.length ? <p>Nenhum produto encontrado</p> : null}
         </div>
+        </Layout>
     )
-}
 }
 
 export default Cart
