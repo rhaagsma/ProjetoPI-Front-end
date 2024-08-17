@@ -11,6 +11,8 @@ import Footer from './components/footer/Footer';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/context';
 import Profile from './pages/Profile';
+import AdminPage from './pages/AdminPage';
+
 function App() {
   return (
     <AuthProvider>
@@ -24,7 +26,7 @@ function App() {
             </Route>
             <Route path="/login" element={<LoginSignup/>}/>
             <Route path="/profile" element={<Profile/>}/>
-
+            <Route path="/adminPage" element={<AdminPage/>}/>
             <Route path="/cart" element={
                 <Cart />
             }/>
