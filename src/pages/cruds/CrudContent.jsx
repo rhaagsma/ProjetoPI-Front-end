@@ -1,40 +1,47 @@
 import React, { useState } from "react";
 import CrudItem from "./CrudItem";
 import CreateProduct from "./CreateProduct";
+import CreateGenre from "./CreateGenre";
+import CreateCategory from "./CreateCategory";
+import CreateBand from "./CreateBand";
 
 const CrudContent = ({ selectedCrud, initialData, onEdit }) => {
-  const [data, setData] = useState(initialData || []);
-  const [showCreateProduct, setShowCreateProduct] = useState(false);
-
+  const [newData, setNewData] = useState('')
+  const [showCreateItem, setShowCreateItem] = useState(false);
+  console.log(initialData)
   const handleAddItem = (newItem) => {
-    setData([...data, newItem]);
+    setNewData([...newData, newItem]);
   };
 
-  const handleShowCreateProduct = () => {
-    setShowCreateProduct(true);
+  const handleShowCreateItem = () => {
+    setShowCreateItem(true);
   };
 
-  const handleHideCreateProduct = () => {
-    setShowCreateProduct(false);
+  const handleHideCreateItem = () => {
+    setShowCreateItem(false);
   };
 
   return (
     <div>
       <h2>{selectedCrud.charAt(0).toUpperCase() + selectedCrud.slice(1)} Management</h2>
-      {data.length ? (
-        data.map(item => <CrudItem key={item.id} selectedCrud={selectedCrud} item={item} onEdit={onEdit} />)
+      {initialData.length ? (
+        initialData.map(item => <CrudItem selectedCrud={selectedCrud} item={item} onEdit={onEdit} />)
       ) : (
         <p>Nenhum {selectedCrud} encontrado</p>
       )}
 
-      <button type="button" onClick={handleShowCreateProduct}>Add New {selectedCrud}</button>
+      <button type="button" onClick={handleShowCreateItem}>Add New {selectedCrud}</button>
 
-      {showCreateProduct && (
-        <CreateProduct
-          selectedCrud={selectedCrud}
-          onAdd={handleAddItem}
-          onHide={handleHideCreateProduct}
-        />
+      {showCreateItem && (
+        
+        <div className="">
+          {
+            selectedCrud === "products"? <CreateProduct onAddItem={handleAddItem} handleHide={handleHideCreateItem} />:
+            selectedCrud === "genres" ? <CreateGenre onAddItem={handleAddItem} handleHide={handleHideCreateItem} />:
+            selectedCrud === "categories" ? <CreateCategory onAddItem={handleAddItem} handleHide={handleHideCreateItem} />: 
+            selectedCrud === "bands" ? <CreateBand onAddItem={handleAddItem} handleHide={handleHideCreateItem} />: null
+          }
+        </div>
       )}
     </div>
   );

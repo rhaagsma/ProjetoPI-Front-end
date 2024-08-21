@@ -1,41 +1,189 @@
-import React from "react";
+import React, {useState, useEffect} from "react"
+import { Button } from "src/components/ui/button"
+import { Input } from "src/components/ui/input"
+
+import { getCategory, getBand, getGenre, getProduct,
+         updateBand, updateCategory, updateGenre, updateProduct 
+        } from "src/services/http-commons"
+
 
 const CrudItem = ({ selectedCrud, item, onEdit }) => {
+  const [Name, setName] = useState(item.name);
+  const [Description, setDescription] = useState(item.description);
+  const [Price, setPrice] = useState(item.price);
+  const [Quantity, setQuantity] = useState(item.quantity);
+  const [Band, setBand] = useState([]);
+  const [Category, setCategory] = useState('');
+  const [Genre, setGenre] = useState([]);
+  const [Product, setProduct] = useState([]);
+  const [Image, setImage] = useState(item.image);
+
+  useEffect(() => {
+    const fetchBandNames = async () => {
+      if (item.bands && item.bands.length > 0) {
+        const bandNames = await Promise.all(item.bands.map(async (bandId) => {
+          const band = await getBand(bandId);
+          return band.name;
+        }));
+        setBand(bandNames);
+      }
+    }
+    
+    const fetchCategoryName = async () => {
+      if (item.category) {
+        const category = await getCategory(item.category);
+        setCategory(category.name);
+      }
+    }
+    
+    const fetchGenreNames = async () => {
+      if (item.genres && item.genres.length > 0) {
+        const genreNames = await Promise.all(item.genres.map(async (genreId) => {
+          const genre = await getGenre(genreId);
+          return genre.name;
+        }));
+        setGenre(genreNames);
+      }
+    }
+    
+    const fetchProductName = async () => {
+      if (item.products && item.products.length > 0) {
+        const productNames = await Promise.all(item.products.map(async (productId) => {
+          const product = await getProduct(productId);
+          return product.name;
+        }));
+        setProduct(productNames);
+      }
+    }
+
+    fetchBandNames();
+    fetchCategoryName();
+    fetchGenreNames();
+    fetchProductName();
+  }, [item.bands, item.category, item.genres, item.products]);
+
+  const handleEdit = () => {
+    const updatedItem = {
+      ...item,
+      name: Name,
+      description: Description,
+      price: Price,
+      quantity: Quantity,
+      bands: Band,
+      category: Category,
+      genre: Genre,
+      product: Product,
+      image: Image,
+    };
+    switch (selectedCrud) {
+      case "bands":
+        updateBand(updatedItem);
+        break;
+      case "categories":
+        updateCategory(updatedItem);
+        break;
+      case "genres":
+        updateGenre(updatedItem);
+        break;
+      case "products":
+        updateProduct(updatedItem);
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <div className={`flex flex-col p-4 bg-white shadow-sm rounded-md`}>
-      <h3 className={`text-lg font-bold`}>
-        {selectedCrud === "products" && `Product ID: ${item.id}`}
-        {selectedCrud === "bands" && `Band ID: ${item.id}`}
-        {selectedCrud === "genres" && `Genre ID: ${item.id}`}
-        {selectedCrud === "categories" && `Category ID: ${item.id}`}
-      </h3>
-      <p className={`text-base`}>
-        Name: {item.name}
-      </p>
-      {selectedCrud === "bands" && (
-        <div>
-          <ul className={`mt-4`}>
-            <li className={`text-sm font-semibold`}>Genres:</li>
-            {item.genres.map(genre => (
-              <li key={genre.id} className={`text-sm`}>{genre.name}</li>
-            ))}
-          </ul>
-          <ul className={`mt-4`}>
-            <li className={`text-sm font-semibold`}>Products:</li>
-            {item.products.map(product => (
-              <li key={product.id} className={`text-sm`}>{product.name}</li>
-            ))}
-          </ul>
-        </div>
+      {selectedCrud === "products" && (
+        <>
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Image}
+            onChange={(e) => setImage(e.target.value)}
+            placeholder="Image URL"
+          />
+      
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Band.join(', ')} 
+            onChange={(e) => setBand(e.target.value.split(',').map(band => band.trim()))}
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+        </>
       )}
-      <button
-        className={`mt-4 px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md`}
-        onClick={() => onEdit(item)}
+
+      {selectedCrud === "bands" && (
+        <>
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Genre.join(', ')}
+            onChange={(e) => setGenre(e.target.value.split(',').map(genre => genre.trim()))}
+          />
+        </>
+      )}  
+
+      {selectedCrud === "categories" && (
+        <Input
+          className={`mt-2 px-2 py-1 rounded-md`}
+          value={Name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      )}
+
+      {selectedCrud === "genres" && (
+        <>
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            className={`mt-2 px-2 py-1 rounded-md`}
+            value={Product.join(', ')} 
+            onChange={(e) => setProduct(e.target.value.split(',').map(prod => prod.trim()))}
+          />
+        </>
+      )}
+
+      <Button
+        
+        onClick={handleEdit}
       >
         Edit
-      </button>
+      </Button>
     </div>
-  );
-};
+  )
+}
 
 export default CrudItem;

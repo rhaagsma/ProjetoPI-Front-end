@@ -2,35 +2,26 @@ import React, { useState, useEffect, useContext } from "react";
 import {Button} from "src/components/ui/button";
 import { Context } from 'src/services/context';
 import CrudContent from "./cruds/CrudContent";
-
+import { getAllBands, getAllCategories, getAllGenres, getAllProduct } from "src/services/http-commons";
 const AdminPage = () => {
 
-  const { GetAllBands, GetAllCategories, GetAllGenres, GetAllProduct} = useContext(Context);
   const [selectedCrud, setSelectedCrud] = useState("products");
   const [data, setData] = useState([]);
 
   const fetchData = async (endpoint) => {
-    try {
       const response = await endpoint();
-      if (response.status === 200) {
-        setData(response.data);
-      } else {
-        console.error("API request failed:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+        setData(response);
     }
-  };
 
   useEffect(() => {
     if (selectedCrud === "products") {
-      fetchData(GetAllProduct);
+      fetchData(getAllProduct);
     } else if (selectedCrud === "bands") {
-      fetchData(GetAllBands);
+      fetchData(getAllBands);
     } else if (selectedCrud === "genres") {
-      fetchData(GetAllGenres);
+      fetchData(getAllGenres);
     } else if (selectedCrud === "categories") {
-      fetchData(GetAllCategories);
+      fetchData(getAllCategories);
     }
   }, [selectedCrud]);
 
@@ -54,8 +45,7 @@ const AdminPage = () => {
           Manage Categories
         </Button>
       </div>
-
-      <CrudContent selectedCrud={selectedCrud} data={data} />
+      <CrudContent selectedCrud={selectedCrud} initialData={data} />
     </div>
   )
 }

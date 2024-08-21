@@ -14,7 +14,8 @@ api.interceptors.request.use(async (config) => {
    config.url.startsWith("/auth/login") ||
     config.url.startsWith("/product") ||
      config.url.startsWith("/band") ||
-      config.url.startsWith("/category")
+      config.url.startsWith("/category") ||
+        config.url.startsWith("/genre")
     )){
     return config;
   }
@@ -150,6 +151,15 @@ async function updateUser(id, dataForm) {
       console.log(error);
     });
 }
+
+async function getBand(id) {
+  return await api
+    .get(`/band/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
 // Band API
 async function getAllBands() {
   return await api
@@ -195,6 +205,14 @@ async function deleteBand(id) {
     });
 }
 
+async function getGenre(id) {
+  return await api
+    .get(`/genre/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
 // Genre API
 async function getAllGenres() {
   return await api
@@ -238,6 +256,14 @@ async function deleteGenre(id) {
       alert("Ocorreu um erro na API:\n" + error);
       console.log(error);
     });
+}
+
+async function getCategory(id) {
+  return await api
+    .get(`/category/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
 }
 
 // Category API
@@ -291,19 +317,27 @@ export {
   deleteUser,
   getUser,
   updateUser,
-  getAllProduct,
+  
+
   getProduct,
+  getAllProduct,
   saveProduct,
   updateProduct,
   deleteProduct,
+
+  getBand,
   getAllBands,
   saveBand,
   updateBand,
   deleteBand,
+
+  getGenre,
   getAllGenres,
   saveGenre,
   updateGenre,
   deleteGenre,
+  
+  getCategory,
   getAllCategories,
   saveCategory,
   updateCategory,

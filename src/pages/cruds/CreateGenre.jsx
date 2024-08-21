@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from "src/components/ui/button";
 import { saveGenre } from 'src/services/http-commons';
+import { Input } from 'src/components/ui/input';
 
 const CreateGenre = () => {
   const [genreName, setGenreName] = useState('');
-  const [bands, setBands] = useState([]);
 
   const SaveGenre = async (e) => {
     e.preventDefault();
     const genre = {
-      name: genreName,
-      bands: bands,
+      name: genreName
     }
 
     try {
@@ -21,7 +20,6 @@ const CreateGenre = () => {
       }
 
       setGenreName('');
-      setBands([]);
 
       console.log('Genre saved successfully');
     } catch (error) {
@@ -39,16 +37,6 @@ const CreateGenre = () => {
           value={genreName}
           onChange={(e) => setGenreName(e.target.value)}
         />
-
-        <select
-          multiple
-          value={bands}
-          onChange={(e) => setBands(Array.from(e.target.selectedOptions, option => option.value))}
-        >
-          {existingBands.map(band => (
-            <option key={band} value={band}>{band}</option>
-          ))}
-        </select>
 
         <div className="flex items-center justify-between">
           <Button
