@@ -10,7 +10,12 @@ api.interceptors.request.use(async (config) => {
 
   const token = localStorage.getItem("token");
 
-  if(config.url && (config.url.startsWith("/auth/register") || config.url.startsWith("/auth/login"))){
+  if(config.url && (config.url.startsWith("/auth/register") ||
+   config.url.startsWith("/auth/login") ||
+    config.url.startsWith("/product") ||
+     config.url.startsWith("/band") ||
+      config.url.startsWith("/category")
+    )){
     return config;
   }
 
@@ -148,7 +153,7 @@ async function updateUser(id, dataForm) {
 // Band API
 async function getAllBands() {
   return await api
-    .get("/bands", {
+    .get("/band", {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response.data);
@@ -156,7 +161,7 @@ async function getAllBands() {
 
 async function saveBand(dataForm) {
   return await api
-    .post("/bands", dataForm, {
+    .post("/band", dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -168,7 +173,7 @@ async function saveBand(dataForm) {
 
 async function updateBand(id, dataForm) {
   return await api
-    .put(`/bands${id}`, dataForm, {
+    .put(`/band${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -180,7 +185,7 @@ async function updateBand(id, dataForm) {
 
 async function deleteBand(id) {
   return await api
-    .delete(`/bands/${id}`, {
+    .delete(`/band/${id}`, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -193,7 +198,7 @@ async function deleteBand(id) {
 // Genre API
 async function getAllGenres() {
   return await api
-    .get("/genres", {
+    .get("/genre", {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response.data);
@@ -201,7 +206,7 @@ async function getAllGenres() {
 
 async function saveGenre(dataForm) {
   return await api
-    .post("/genres", dataForm, {
+    .post("/genre", dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -213,7 +218,7 @@ async function saveGenre(dataForm) {
 
 async function updateGenre(id, dataForm) {
   return await api
-    .put(`/genres${id}`, dataForm, {
+    .put(`/genre${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -225,7 +230,7 @@ async function updateGenre(id, dataForm) {
 
 async function deleteGenre(id) {
   return await api
-    .delete(`/genres/${id}`, {
+    .delete(`/genre/${id}`, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -238,7 +243,7 @@ async function deleteGenre(id) {
 // Category API
 async function getAllCategories() {
   return await api
-    .get("/categories", {
+    .get("/category", {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response.data);
@@ -246,7 +251,7 @@ async function getAllCategories() {
 
 async function saveCategory(dataForm) {
   return await api
-    .post("/categories", dataForm, {
+    .post("/category", dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -258,7 +263,7 @@ async function saveCategory(dataForm) {
 
 async function updateCategory(id, dataForm) {
   return await api
-    .put(`/categories${id}`, dataForm, {
+    .put(`/category${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -270,7 +275,7 @@ async function updateCategory(id, dataForm) {
 
 async function deleteCategory(id) {
   return await api
-    .delete(`/categories/${id}`, {
+    .delete(`/category/${id}`, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)

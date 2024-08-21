@@ -1,25 +1,48 @@
-import React, { useState } from 'react';
-import { Button } from "src/components/ui/button";
-import { saveProduct } from 'src/services/http-commons';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'src/components/ui/button';
+import { saveProduct, getAllBands, getAllCategories } from 'src/services/http-commons';
+import { Input } from 'src/components/ui/input';
+import Image from './Image';
 
-const CreateProduct = () => {
-    
+export default function CreateProduct() {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productQuantity, setProductQuantity] = useState('');
-  const [bands, setBands] = useState([]);
-  const [category, setCategory] = useState('');
+  const [selectedBands, setSelectedBands] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [productImage, setProductImage] = useState('');
+  const [existsBands, setExistsBands] = useState([]);
+  const [existCategories, setExistCategories] = useState([]);
 
-  const SaveProduct = async (e) => {
+  const fetchBands = async () => {
+    try {
+      const bands = await getAllBands();
+      setExistsBands(bands);
+    } catch (error) {
+      console.error('Error fetching bands:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      setExistCategories(categories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const handleSaveProduct = async (e) => {
     e.preventDefault();
     const product = {
       name: productName,
+      image: productImage,
       description: productDescription,
       price: productPrice,
       quantity: productQuantity,
-      bands: bands,
-      category: category,
+      bands: selectedBands,
+      category: selectedCategory,
     };
 
     try {
@@ -33,8 +56,9 @@ const CreateProduct = () => {
       setProductDescription('');
       setProductPrice('');
       setProductQuantity('');
-      setBands([]);
-      setCategory('');
+      setSelectedBands([]);
+      setSelectedCategory('');
+      setProductImage('');
 
       console.log('Product saved successfully');
     } catch (error) {
@@ -42,27 +66,122 @@ const CreateProduct = () => {
     }
   };
 
+  useEffect(() => {
+    fetchBands();
+    fetchCategories();
+  }, []);
+
+  const handleBandChange = (e) => {
+    setSelectedBands([...selectedBands, e.target.value]);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
   return (
     <div className="flex justify-center items-center h-screen">
-      <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md" onSubmit={SaveProduct}>
-        <Input
-          label="Product Name"
-          id="name"
-          type="text"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-        />
+      <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productName">
+            Name
+          </label>
+          <Input
+            type="text"
+            id="productName"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
 
-        {/* Add more Input components for other product details */}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productDescription">
+            Description
+          </label>
+          <textarea
+            id="productDescription"
+            value={productDescription}
+            onChange={(e) => setProductDescription(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productPrice">
+            Price
+          </label>
+          <Input
+            type="number"
+            id="productPrice"
+            value={productPrice}
+            onChange={(e) => setProductPrice(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bands">
+            Bands
+          </label>
+          <select
+            id="bands"
+            value={selectedBands}
+            onChange={handleBandChange}
+            multiple
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
+            {existsBands.map((band) => (
+              <option key={band.id} value={band.name}>
+                {band.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+            Category
+          </label>
+          <div>
+            {existCategories.map((category) => (
+              <label key={category.id} className="inline-flex items-center mr-6">
+                <input
+                  type="radio"
+                  name="category"
+                  value={category.name}
+                  checked={selectedCategory === category.name}
+                  onChange={handleCategoryChange}
+                  className="form-radio h-4 w-4 text-blue-600"
+                />
+                <span className="ml-2 text-gray-700">{category.name}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productQuantity">
+            Quantity
+          </label>
+          <Input
+            type="number"
+            id="productQuantity"
+            value={productQuantity}
+            onChange={(e) => setProductQuantity(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productImage">
+            Image
+          </label>
+          <Image value={productImage} onChange={setProductImage} />
+        </div>
 
         <div className="flex items-center justify-between">
-          <Button
-            className="w-full sm:w-auto"
-          >
-            Save Product
+          <Button onClick={(e) => handleSaveProduct(e)} >
+          Save Product
           </Button>
         </div>
       </form>
     </div>
   );
-};
+}

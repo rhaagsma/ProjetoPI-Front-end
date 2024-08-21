@@ -42,9 +42,20 @@ function AuthProvider({ children }) {
   async function GetAllProduct(){ 
     await getAllProduct();
   }
+  async function GetAllBands(){ 
+    await getAllBands();
+  }
+  async function GetAllGenres(){ 
+    await getAllGenres();
+  }
+  async function GetAllCategories(){ 
+    await getAllCategories();
+  }
 
   return (
-    <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated , GetAllProduct }}>
+    <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated, 
+                              GetAllProduct, GetAllBands, GetAllGenres, GetAllCategories
+                              }}>
       {children}
     </Context.Provider>
   );
