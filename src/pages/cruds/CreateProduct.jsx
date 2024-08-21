@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from 'src/components/ui/button';
-import { saveProduct, getAllBands, getAllCategories } from 'src/services/http-commons';
-import { Input } from 'src/components/ui/input';
-import Image from './Image';
+import React, { useEffect, useState } from 'react'
+import { Button } from 'src/components/ui/button'
+import { saveProduct, getAllBands, getAllCategories } from 'src/services/http-commons'
+import { Input } from 'src/components/ui/input'
+import Image from './Image'
 
 export default function CreateProduct() {
   const [productName, setProductName] = useState('');
@@ -22,7 +22,7 @@ export default function CreateProduct() {
     } catch (error) {
       console.error('Error fetching bands:', error);
     }
-  };
+  }
 
   const fetchCategories = async () => {
     try {
@@ -31,19 +31,20 @@ export default function CreateProduct() {
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
-  };
+  }
 
   const handleSaveProduct = async (e) => {
     e.preventDefault();
+    console.log(selectedBands, selectedCategory);
     const product = {
       name: productName,
       image: productImage,
       description: productDescription,
       price: productPrice,
       quantity: productQuantity,
-      bands: selectedBands,
-      category: selectedCategory,
-    };
+      bands: selectedBands.map(band => ({ id: band.id })),
+      category: selectedCategory.id
+    }
 
     try {
       const response = await saveProduct(product);
@@ -64,7 +65,7 @@ export default function CreateProduct() {
     } catch (error) {
       console.error('Error saving product:', error);
     }
-  };
+  }
 
   useEffect(() => {
     fetchBands();
@@ -72,12 +73,14 @@ export default function CreateProduct() {
   }, []);
 
   const handleBandChange = (e) => {
-    setSelectedBands([...selectedBands, e.target.value]);
-  };
 
+    setSelectedBands([...selectedBands, selectedBand]);
+  }
+  
   const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
+    
+    setSelectedCategory([...selectedCategory, selectedCategory]);
+  }
   return (
     <div className="flex justify-center items-center h-screen">
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
@@ -183,5 +186,5 @@ export default function CreateProduct() {
         </div>
       </form>
     </div>
-  );
+  )
 }
