@@ -41,7 +41,7 @@ const Profile = () => {
         }
     };
     const handleDelete = async (e) => {
-        e.preventDefault();
+      
         const response = await deleteUser(userId);
         if (response.status === 200) {
             console.log(response.data);

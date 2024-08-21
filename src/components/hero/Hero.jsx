@@ -1,6 +1,7 @@
 import React from "react"
 import './Hero.css'
 import gati from "../assets/gati firte.png"
+import { Navigate, Link } from "react-router-dom"
 const Hero = () => {
     return (
         <div className="hero">
@@ -14,10 +15,12 @@ const Hero = () => {
                     <p>collections</p>
                     <p>for everyone</p>
                 </div>
-                <div className="hero-latest-btn">
-                    <div>Latest Collection</div>
-                    <img src="arrow_icon" alt="" />
-                </div>
+                <button className="hero-latest-btn">
+                    <Link to="/special">
+                        <div>Latest Collection</div>
+                        <img src="arrow_icon" alt="" />
+                    </Link>
+                </button>
             </div>
             <div className="hero-right">
                 <img src={gati} alt="" />

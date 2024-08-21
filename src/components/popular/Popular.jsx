@@ -1,23 +1,36 @@
-import React from 'react'
-import './Popular.css'
-import Item from '../item/Item'
-
+import Card from 'src/components/card';
+import Layout from 'src/components/layout';
+import React, { useEffect, useState } from 'react';
+import { getAllProduct } from 'src/services/http-commons';
+import Search from 'src/components/search';
+import "./Popular.css"
 const Popular = () => {
+    const [data, setData] = useState([]);
+
+    async function initialize() {
+        try {
+            const res = await getAllProduct()
+            setData(res)
+        } catch (error) {
+            console.log(error) 
+        }
+    }
+
+    useEffect(() => {
+        initialize()
+    }, [])
+
     return (
         <div className="popular">
             <h1>Populares</h1>
             <hr />
-            <div className="popular-item">
-                {/* {data_product.map((item, i) =>{
-                    return <Item key={i} 
-                                id={item.id} 
-                                name={item.name} 
-                                image={item.image} 
-                                new_price={item.new_price} 
-                                old_price={item.old_price}/>
-                })} */}
+            <Layout>
+                <div className='grid grid-cols-4 gap-4'>
+                    {data.map(el => <Card id={el.id} image={el.image} name={el.name} price={el.price}/>)}
+                    {!data.length ? <p>Nenhum produto encontrado</p> : null}
+                </div>
+            </Layout>
             </div>
-        </div>
     )
 }
 
