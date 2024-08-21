@@ -38,12 +38,12 @@ export default function CreateProduct() {
     console.log(selectedBands, selectedCategory);
     const product = {
       name: productName,
-      image: productImage,
+      image: "productImage",
       description: productDescription,
       price: productPrice,
       quantity: productQuantity,
-      bands: selectedBands.map(band => ({ id: band.id })),
-      category: selectedCategory.id
+      bands: selectedBands,
+      category: selectedCategory
     }
 
     try {
@@ -73,13 +73,13 @@ export default function CreateProduct() {
   }, []);
 
   const handleBandChange = (e) => {
-
-    setSelectedBands([...selectedBands, selectedBand]);
+    
+    setSelectedBands([...selectedBands, e.target.value]);
   }
   
   const handleCategoryChange = (e) => {
     
-    setSelectedCategory([...selectedCategory, selectedCategory]);
+    setSelectedCategory(e.target.value);
   }
   return (
     <div className="flex justify-center items-center h-screen">
@@ -125,19 +125,20 @@ export default function CreateProduct() {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bands">
             Bands
           </label>
-          <select
-            id="bands"
-            value={selectedBands}
-            onChange={handleBandChange}
-            multiple
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
+          <div>
             {existsBands.map((band) => (
-              <option key={band.id} value={band.name}>
-                {band.name}
-              </option>
+              <label key={band.id} className="inline-flex items-center mr-6">
+                <input
+                  type="radio"
+                  name="band"
+                  value={band.id}
+                  onChange={handleBandChange}
+                  className="form-radio h-4 w-4 text-blue-600"
+                />
+                <span className="ml-2 text-gray-700">{band.name}</span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
@@ -149,8 +150,7 @@ export default function CreateProduct() {
                 <input
                   type="radio"
                   name="category"
-                  value={category.name}
-                  checked={selectedCategory === category.name}
+                  value={category.id}
                   onChange={handleCategoryChange}
                   className="form-radio h-4 w-4 text-blue-600"
                 />
