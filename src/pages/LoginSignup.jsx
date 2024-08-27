@@ -27,7 +27,12 @@ const LoginSignup = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const user = { login: registerName, password: registerPassword };
+            const user = { 
+                login: registerName, 
+                email: registerEmail, 
+                telephone: registerTelefone,
+                password: registerPassword 
+            };
             const response = await SubmitRegister(user);
             console.log(user);
             console.log(response);
