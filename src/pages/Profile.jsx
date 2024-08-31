@@ -26,7 +26,7 @@ const Profile = () => {
             setName(response.login);
             setEmail(response.email);
             setTelephone(response.telephone);
-            setPassword(response.password);
+            setPassword('senhadificil');
             setAddress(response.address);
             setRole("admin");
         }
@@ -34,7 +34,7 @@ const Profile = () => {
   
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const user = { login, password};
+        const user = { login, email, telephone, password };
         const response = await updateUser(userId, user);
         if (response.status === 200) {
             console.log(response.data);

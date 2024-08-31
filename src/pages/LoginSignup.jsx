@@ -17,7 +17,7 @@ const LoginSignup = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await SubmitLogin({ login: loginName,password: loginPassword });
+            const response = await SubmitLogin({ login: loginName, password: loginPassword });
 
             console.log(response.data);
         } catch (error) {
