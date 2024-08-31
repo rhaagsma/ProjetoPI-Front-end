@@ -12,7 +12,8 @@ const LoginSignup = () => {
     const [registerPassword, setRegisterPassword] = useState('');
 
     const { SubmitLogin, SubmitRegister } = useContext(Context);
-
+    const [feedbackMessage, setFeedbackMessage] = useState('');
+    
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -36,9 +37,12 @@ const LoginSignup = () => {
             const response = await SubmitRegister(user);
             console.log(user);
             console.log(response);
+            setFeedbackMessage("Registration successful!");
             window.alert("Registration successful!");
         } catch (error) {
             console.error(error);
+            setFeedbackMessage("Registration failed. Please try again.");
+            window.alert("Registration failed. Please try again.");
         }
     };
 
@@ -75,9 +79,10 @@ const LoginSignup = () => {
                             <input type="text" placeholder="Telefone" value={registerTelefone} onChange={(e) => setRegisterTelefone(e.target.value)} className="p-2 border border-gray-300 rounded-md" />
                             <input type="password" placeholder="Senha" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} className="p-2 border border-gray-300 rounded-md" />
                             <Button className="w-full cursor-pointer">Cadastrar</Button>
-                        </form>
-                    </div>
-                </div>
+                    {feedbackMessage && <p className="text-sm text-green-600">{feedbackMessage}</p>}
+                </form>
+            </div>
+        </div>
             </div>
         </div>
     );

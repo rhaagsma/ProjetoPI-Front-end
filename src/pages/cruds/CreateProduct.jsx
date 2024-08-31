@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'src/components/ui/button'
-import { saveProduct, getAllBands, getAllCategories } from 'src/services/http-commons'
+import { saveProduct, getAllBands, getAllCategories, updateProduct } from 'src/services/http-commons'
 import { Input } from 'src/components/ui/input'
 import Image from './Image'
 
-export default function CreateProduct() {
+const CreateProduct = ({handleHide, data}) => {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -35,22 +35,30 @@ export default function CreateProduct() {
 
   const handleSaveProduct = async (e) => {
     e.preventDefault();
-    console.log(selectedBands, selectedCategory);
-    const product = {
+    const productData = {
       name: productName,
-      image: "productImage",
+      image: productImage,
       description: productDescription,
       price: productPrice,
       quantity: productQuantity,
-      bands: selectedBands,
-      category: selectedCategory
+      bands: selectedBands.id,
+      category: selectedCategory.id
     }
 
     try {
-      const response = await saveProduct(product);
-
-      if (!response.ok) {
-        throw new Error('Failed to save product');
+      if (data) {
+        console.log(data)
+        console.log(data.id)
+        const response = await updateProduct(data.id, productData);
+        if (!response.ok) {
+          throw new Error('Failed to update product');
+        }
+      } else {
+        
+        const response = await saveProduct(productData);
+        if (!response.ok) {
+          throw new Error('Failed to save product');
+        }
       }
 
       setProductName('');
@@ -70,7 +78,17 @@ export default function CreateProduct() {
   useEffect(() => {
     fetchBands();
     fetchCategories();
-  }, []);
+
+    if (data) {
+      setProductName(data.name);
+      setProductDescription(data.description);
+      setProductPrice(data.price);
+      setProductQuantity(data.quantity);
+      setSelectedBands(data.bands.map(band => band.id));
+      setSelectedCategory(data.category.id);
+      setProductImage(data.image);
+    }
+  }, [data]);
 
   const handleBandChange = (e) => {
     
@@ -81,6 +99,7 @@ export default function CreateProduct() {
     
     setSelectedCategory(e.target.value);
   }
+  
   return (
     <div className="flex justify-center items-center h-screen">
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
@@ -180,11 +199,14 @@ export default function CreateProduct() {
         </div>
 
         <div className="flex items-center justify-between">
-          <Button onClick={(e) => handleSaveProduct(e)} >
-          Save Product
+          <Button onClick={handleSaveProduct}>
+            {data ? 'Update Product' : 'Save Product'}
           </Button>
+          <Button onClick={handleHide}>Cancel</Button>
         </div>
+        
       </form>
     </div>
   )
 }
+export default CreateProduct

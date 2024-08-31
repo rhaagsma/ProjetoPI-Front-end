@@ -1,38 +1,60 @@
 import React, {useState, useEffect} from "react"
 import { Button } from "src/components/ui/button"
 import { Input } from "src/components/ui/input"
-
 import { getCategory, getBand, getGenre, getProduct,
-         updateBand, updateCategory, updateGenre, updateProduct 
+         updateBand, updateCategory, updateGenre, updateProduct,
+         deleteProduct, deleteBand, deleteCategory, deleteGenre
         } from "src/services/http-commons"
+import CreateProduct from "./CreateProduct";
+import CreateBand from "./CreateBand";
+import CreateGenre from "./CreateGenre";
+import CreateCategory from "./CreateCategory";
 
+import ProductCard from "./CrudsCards/ProductCard";
+import BandCard from "./CrudsCards/BandCard.jsx";
+import CategoryCard from "./CrudsCards/CategoryCard";
+import GenreCard from "./CrudsCards/GenreCard";
 
-const CrudItem = ({ selectedCrud, item, onEdit }) => {
+import Modal from "./modal";
+
+const CrudItem = ({selectedCrud, item, onEdit }) => {
+  
   const [Name, setName] = useState(item.name);
   const [Description, setDescription] = useState(item.description);
   const [Price, setPrice] = useState(item.price);
   const [Quantity, setQuantity] = useState(item.quantity);
-  const [Band, setBand] = useState([]);
   const [Category, setCategory] = useState('');
   const [Genre, setGenre] = useState([]);
   const [Product, setProduct] = useState([]);
   const [Image, setImage] = useState(item.image);
+  const [isEdit, setIsEdit] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
+  const [data, setData] = useState({id: item.id,
+                                    name: item.name, 
+                                    description: item.description, 
+                                    price: item.price, 
+                                    quantity: item.quantity, 
+                                    category: item.category,
+                                    genres: item.genres,
+                                    products: item.products,
+                                    image: item.image,
+                                    bands: item.bands});
   useEffect(() => {
     const fetchBandNames = async () => {
       if (item.bands && item.bands.length > 0) {
         const bandNames = await Promise.all(item.bands.map(async (bandId) => {
           const band = await getBand(bandId);
-          return band.name;
+          return band;
         }));
-        setBand(bandNames);
+        data.bands = bandNames;
       }
     }
     
     const fetchCategoryName = async () => {
       if (item.category) {
         const category = await getCategory(item.category);
-        setCategory(category.name);
+        data.category = category;
       }
     }
     
@@ -40,9 +62,9 @@ const CrudItem = ({ selectedCrud, item, onEdit }) => {
       if (item.genres && item.genres.length > 0) {
         const genreNames = await Promise.all(item.genres.map(async (genreId) => {
           const genre = await getGenre(genreId);
-          return genre.name;
+          return genre;
         }));
-        setGenre(genreNames);
+        data.genres = genreNames;
       }
     }
     
@@ -50,138 +72,86 @@ const CrudItem = ({ selectedCrud, item, onEdit }) => {
       if (item.products && item.products.length > 0) {
         const productNames = await Promise.all(item.products.map(async (productId) => {
           const product = await getProduct(productId);
-          return product.name;
+          return product;
         }));
-        setProduct(productNames);
+        data.products = productNames;
       }
     }
-
+    console.log(data);
     fetchBandNames();
     fetchCategoryName();
     fetchGenreNames();
     fetchProductName();
   }, [item.bands, item.category, item.genres, item.products]);
 
-  const handleEdit = () => {
-    const updatedItem = {
-      ...item,
-      name: Name,
-      description: Description,
-      price: Price,
-      quantity: Quantity,
-      bands: Band,
-      category: Category,
-      genre: Genre,
-      product: Product,
-      image: Image,
-    };
-    switch (selectedCrud) {
-      case "bands":
-        updateBand(updatedItem);
-        break;
-      case "categories":
-        updateCategory(updatedItem);
-        break;
-      case "genres":
-        updateGenre(updatedItem);
-        break;
-      case "products":
-        updateProduct(updatedItem);
-        break;
-      default:
-        break;
+  const handleDelete = async (e) => {
+    const confirmation = window.confirm('Are you sure you want to delete this item?');
+  
+    if (confirmation) {
+      try {
+        switch (selectedCrud) {
+          case 'products':
+            await deleteProduct(item.id);
+            break;
+          case 'bands':
+            await deleteBand(item.id);
+            break;
+          case 'categories':
+            await deleteCategory(item.id);
+            break;
+          case 'genres':
+            await deleteGenre(item.id);
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Failed to delete item');
+      }
     }
   }
 
+
   return (
-    <div className={`flex flex-col p-4 bg-white shadow-sm rounded-md`}>
-      {selectedCrud === "products" && (
+    <div className="flex flex-col p-4 bg-white shadow-sm rounded-md">
+      {showModal && (
+        <Modal>
+          {selectedCrud === "products" ? (
+            <CreateProduct data={data} />
+          ) : selectedCrud === "bands" ? (
+            <CreateBand data={data} />
+          ) : selectedCrud === "categories" ? (
+            <CreateCategory data={data} />
+          ) : selectedCrud === "genres" ? (
+            <CreateGenre data={data} />
+          ) : null}
+
+        </Modal>
+      )}
+      {selectedCrud && (
         <>
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Image}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="Image URL"
-          />
-      
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Band.join(', ')} 
-            onChange={(e) => setBand(e.target.value.split(',').map(band => band.trim()))}
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
+          {selectedCrud === "products" ? (
+            <ProductCard data={data} />
+          ) : selectedCrud === "bands" ? (
+            <BandCard data={data} />
+          ) : selectedCrud === "categories" ? (
+            <CategoryCard data={data} />
+          ) : selectedCrud === "genres" ? (
+            <GenreCard data={data} />
+          ) : (
+            <ProductCard data={data} />
+          )}
         </>
       )}
-
-      {selectedCrud === "bands" && (
-        <>
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Genre.join(', ')}
-            onChange={(e) => setGenre(e.target.value.split(',').map(genre => genre.trim()))}
-          />
-        </>
-      )}  
-
-      {selectedCrud === "categories" && (
-        <Input
-          className={`mt-2 px-2 py-1 rounded-md`}
-          value={Name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      )}
-
-      {selectedCrud === "genres" && (
-        <>
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            className={`mt-2 px-2 py-1 rounded-md`}
-            value={Product.join(', ')} 
-            onChange={(e) => setProduct(e.target.value.split(',').map(prod => prod.trim()))}
-          />
-        </>
-      )}
-
-      <Button
-        
-        onClick={handleEdit}
-      >
-        Edit
-      </Button>
+      <div className="flex items-center justify-between py-3">
+        <Button onClick={() => setShowModal(true)}>
+          Edit
+        </Button>
+        <Button className="bg-red-500" onClick={handleDelete}>
+          Delete
+        </Button>
+      </div>
     </div>
   )
 }

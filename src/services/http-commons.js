@@ -13,6 +13,7 @@ api.interceptors.request.use(async (config) => {
   if(config.url && (config.url.startsWith("/auth/register") ||
    config.url.startsWith("/auth/login") ||
     config.url.startsWith("/product") ||
+    config.url.startsWith("/product/") ||
      config.url.startsWith("/band") ||
       config.url.startsWith("/category") ||
         config.url.startsWith("/genre")
@@ -57,7 +58,7 @@ async function saveProduct(dataForm) {
 
 async function updateProduct(id, dataForm) {
   return await api
-    .put(`/product${id}`, dataForm, {
+    .put(`/product/${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -183,7 +184,7 @@ async function saveBand(dataForm) {
 
 async function updateBand(id, dataForm) {
   return await api
-    .put(`/band${id}`, dataForm, {
+    .put(`/band/${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -236,7 +237,7 @@ async function saveGenre(dataForm) {
 
 async function updateGenre(id, dataForm) {
   return await api
-    .put(`/genre${id}`, dataForm, {
+    .put(`/genre/${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)
@@ -289,7 +290,7 @@ async function saveCategory(dataForm) {
 
 async function updateCategory(id, dataForm) {
   return await api
-    .put(`/category${id}`, dataForm, {
+    .put(`/category/${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => response)

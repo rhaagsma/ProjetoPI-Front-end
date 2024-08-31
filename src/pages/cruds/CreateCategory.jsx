@@ -3,7 +3,7 @@ import { Button } from "src/components/ui/button";
 import { saveCategory } from 'src/services/http-commons';
 import { Input } from 'src/components/ui/input';
 
-const CreateGenre = () => {
+const CreateCategory = () => {
   const [categoryName, setCategoryName] = useState('');
 
   const SaveCategory = async (e) => {
@@ -50,4 +50,4 @@ const CreateGenre = () => {
   )
 }
 
-export default CreateGenre;
+export default CreateCategory;

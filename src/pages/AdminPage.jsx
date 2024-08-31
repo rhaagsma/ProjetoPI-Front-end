@@ -28,24 +28,50 @@ const AdminPage = () => {
   const handleButtonClick = (crud) => {
     setSelectedCrud(crud);
   }
+  const handleEdit = async () => {
+    try {
+      
+      const updatedItems = await fetchData(getSelectedEndpoint());
+  
+      setData(updatedItems);
+    } catch (error) {
+      
+      console.error('Error fetching updated items:', error);
+    }
+  };
+  
+  const getSelectedEndpoint = () => {
+    switch (selectedCrud) {
+      case 'products':
+        return getAllProduct;
+      case 'bands':
+        return getAllBands;
+      case 'genres':
+        return getAllGenres;
+      case 'categories':
+        return getAllCategories;
+      default:
+        return getAllProduct;
+    }
+  };
 
   return (
-    <div className="container mx-auto p-4 flex flex-col sm:flex-row items-center justify-center">
-      <div className="flex flex-wrap gap-2">
-        <Button className="w-full sm:w-auto" onClick={() => handleButtonClick("products")}>
+    <div className="container mx-auto p-4 flex flex-col items-center justify-center">
+      <div className="flex flex-wrap gap-2 mb-4">
+        <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("products")}>
           Manage Products
         </Button>
-        <Button className="w-full sm:w-auto" onClick={() => handleButtonClick("bands")}>
+        <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("bands")}>
           Manage Bands
         </Button>
-        <Button className="w-full sm:w-auto" onClick={() => handleButtonClick("genres")}>
+        <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("genres")}>
           Manage Genres
         </Button>
-        <Button className="w-full sm:w-auto" onClick={() => handleButtonClick("categories")}>
+        <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("categories")}>
           Manage Categories
         </Button>
       </div>
-      <CrudContent selectedCrud={selectedCrud} initialData={data} />
+      <CrudContent selectedCrud={selectedCrud} initialData={data} onEdit= {handleEdit}/>
     </div>
   )
 }
