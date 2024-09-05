@@ -11,7 +11,7 @@ api.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("token");
 
   if(config.url && (config.url.startsWith("/auth/register") ||
-   config.url.startsWith("/auth/login") ||
+   //config.url.startsWith("/auth/login") ||
     config.url.startsWith("/product") ||
     config.url.startsWith("/product/") ||
      config.url.startsWith("/band") ||

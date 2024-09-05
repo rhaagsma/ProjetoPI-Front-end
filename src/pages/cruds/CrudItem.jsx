@@ -19,9 +19,11 @@ import Modal from "./modal";
 
 const CrudItem = ({selectedCrud, item, onEdit }) => {
   
-  const [bands, setBands] = useState([])
+  const [bands, setBands] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
+  const [products, setProducts] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [category, setCategory] = useState([]);
   const [data, setData] = useState({id: item.id,
                                     name: item.name, 
                                     description: item.description, 
@@ -31,50 +33,66 @@ const CrudItem = ({selectedCrud, item, onEdit }) => {
                                     genres: item.genres,
                                     products: item.products,
                                     image: item.image,
-                                    bands: bands});
+                                    bands: item.bands});
   useEffect(() => {
     const fetchBandNames = async () => {
       if (item.bands && item.bands.length > 0) {
-        const bandNames = await Promise.all(item.bands.map(async (bandId) => {
+        const bandNames = await (item.bands.map(async (bandId) => {
           const band = await getBand(bandId);
-          return band;
+            return band;
         }));
-        setBands(bandNames)
+      
       }
     }
     
     const fetchCategoryName = async () => {
       if (item.category) {
         const category = await getCategory(item.category);
-        data.category = category;
+        setCategory(category);
       }
+
     }
     
     const fetchGenreNames = async () => {
       if (item.genres && item.genres.length > 0) {
-        const genreNames = await Promise.all(item.genres.map(async (genreId) => {
+        const genreNames = await (item.genres.map(async (genreId) => {
           const genre = await getGenre(genreId);
-          return genre;
+          setGenres(genreNames);
         }));
-        data.genres = genreNames;
+        
       }
     }
     
     const fetchProductName = async () => {
       if (item.products && item.products.length > 0) {
-        const productNames = await Promise.all(item.products.map(async (productId) => {
+        const productNames = await (item.products.map(async (productId) => {
           const product = await getProduct(productId);
           return product;
         }));
-        data.products = productNames;
+        setProducts(productNames);
       }
     }
-    console.log(data);
+
     fetchBandNames();
     fetchCategoryName();
     fetchGenreNames();
     fetchProductName();
-  }, [item.bands, item.category, item.genres, item.products]);
+
+    const newData = {
+      id: item.id,
+      name: item.name, 
+      description: item.description, 
+      price: item.price, 
+      quantity: item.quantity, 
+      category: category,
+      genres: genres,
+      products: products,
+      image: item.image,
+      bands: bands
+    }    
+    setData(newData)
+
+  }, [item.bands, item.category, item.genres, item.products])
 
   const handleDelete = async (e) => {
     const confirmation = window.confirm('Are you sure you want to delete this item?');

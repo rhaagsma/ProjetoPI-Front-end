@@ -34,20 +34,21 @@ const CreateProduct = ({handleHide, data}) => {
   }
 
   const handleSaveProduct = async (e) => {
-    e.preventDefault();
+    
+
     const productData = {
       name: productName,
       image: productImage,
       description: productDescription,
       price: productPrice,
       quantity: productQuantity,
-      bands: selectedBands.id,
-      category: selectedCategory.id
+      bands: selectedBands,
+      category: selectedCategory
     }
 
     try {
       if (data) {
-        console.log(data)
+        console.log(productData)
         console.log(data.id)
         const response = await updateProduct(data.id, productData);
         if (!response.ok) {
@@ -80,6 +81,7 @@ const CreateProduct = ({handleHide, data}) => {
     fetchCategories();
 
     if (data) {
+      console.log(data)
       setProductName(data.name);
       setProductDescription(data.description);
       setProductPrice(data.price);
@@ -91,12 +93,12 @@ const CreateProduct = ({handleHide, data}) => {
   }, [data]);
 
   const handleBandChange = (e) => {
-    
+    console.log(e.target.value)
     setSelectedBands([...selectedBands, e.target.value]);
   }
   
   const handleCategoryChange = (e) => {
-    
+    console.log(e.target.value)
     setSelectedCategory(e.target.value);
   }
   

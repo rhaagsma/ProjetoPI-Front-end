@@ -3,6 +3,8 @@ import { Button } from 'src/components/ui/button'
 import Image from '../Image'
 
 const ProductCard = ({ data }) => {
+  const category = data.category;
+  console.log(data);
   return (
     <div className="flex justify-center items-center ">
       <div className="w-full max-w-md p-5 bg-white rounded-lg shadow-md">
@@ -37,7 +39,7 @@ const ProductCard = ({ data }) => {
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
-          <p>{data.category.name}</p>
+          <p>{category.name}</p>
         </div>
 
         <div className="mb-4">
