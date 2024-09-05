@@ -27,6 +27,7 @@ const LoginSignup = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        
         try {
             const user = { 
                 login: registerName, 
@@ -38,11 +39,9 @@ const LoginSignup = () => {
             console.log(user);
             console.log(response);
             setFeedbackMessage("Registration successful!");
-            window.alert("Registration successful!");
         } catch (error) {
             console.error(error);
             setFeedbackMessage("Registration failed. Please try again.");
-            window.alert("Registration failed. Please try again.");
         }
     };
 

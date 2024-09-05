@@ -38,7 +38,12 @@ function AuthProvider({ children }) {
       }
     
   }
-
+  async function Logout(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    setAuthenticated(false);
+    navigate('/login');
+  }
   async function GetAllProduct(){ 
     await getAllProduct();
   }
@@ -53,7 +58,7 @@ function AuthProvider({ children }) {
   }
 
   return (
-    <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated, 
+    <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated, Logout,
                               GetAllProduct, GetAllBands, GetAllGenres, GetAllCategories
                               }}>
       {children}

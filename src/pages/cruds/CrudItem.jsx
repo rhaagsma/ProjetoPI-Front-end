@@ -19,15 +19,7 @@ import Modal from "./modal";
 
 const CrudItem = ({selectedCrud, item, onEdit }) => {
   
-  const [Name, setName] = useState(item.name);
-  const [Description, setDescription] = useState(item.description);
-  const [Price, setPrice] = useState(item.price);
-  const [Quantity, setQuantity] = useState(item.quantity);
-  const [Category, setCategory] = useState('');
-  const [Genre, setGenre] = useState([]);
-  const [Product, setProduct] = useState([]);
-  const [Image, setImage] = useState(item.image);
-  const [isEdit, setIsEdit] = useState(false);
+  const [bands, setBands] = useState([])
   const [showModal, setShowModal] = useState(false);
 
   const [data, setData] = useState({id: item.id,
@@ -39,7 +31,7 @@ const CrudItem = ({selectedCrud, item, onEdit }) => {
                                     genres: item.genres,
                                     products: item.products,
                                     image: item.image,
-                                    bands: item.bands});
+                                    bands: bands});
   useEffect(() => {
     const fetchBandNames = async () => {
       if (item.bands && item.bands.length > 0) {
@@ -47,7 +39,7 @@ const CrudItem = ({selectedCrud, item, onEdit }) => {
           const band = await getBand(bandId);
           return band;
         }));
-        data.bands = bandNames;
+        setBands(bandNames)
       }
     }
     
