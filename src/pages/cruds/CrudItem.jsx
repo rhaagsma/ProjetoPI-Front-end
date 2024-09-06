@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from "react"
 import { Button } from "src/components/ui/button"
-import { Input } from "src/components/ui/input"
 import { getCategory, getBand, getGenre, getProduct,
-         updateBand, updateCategory, updateGenre, updateProduct,
          deleteProduct, deleteBand, deleteCategory, deleteGenre
         } from "src/services/http-commons"
 import CreateProduct from "./CreateProduct";
 import CreateBand from "./CreateBand";
 import CreateGenre from "./CreateGenre";
 import CreateCategory from "./CreateCategory";
+import CreateShowCase from "./CreateShowCase";
 
 import ProductCard from "./CrudsCards/ProductCard";
 import BandCard from "./CrudsCards/BandCard.jsx";
@@ -17,7 +16,7 @@ import GenreCard from "./CrudsCards/GenreCard";
 
 import Modal from "./modal";
 
-const CrudItem = ({selectedCrud, item, onEdit }) => {
+const CrudItem = ({selectedCrud, item}) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = async (e) => {
@@ -36,6 +35,9 @@ const CrudItem = ({selectedCrud, item, onEdit }) => {
             await deleteCategory(item.id);
             break;
           case 'genres':
+            await deleteGenre(item.id);
+            break;
+          case 'showcase':
             await deleteGenre(item.id);
             break;
           default:
@@ -61,6 +63,8 @@ const CrudItem = ({selectedCrud, item, onEdit }) => {
             <CreateCategory data={item} />
           ) : selectedCrud === "genres" ? (
             <CreateGenre data={item} />
+          ) : selectedCrud === "showcase" ? (
+            <CreateGenre data={item} />
           ) : null}
 
         </Modal>
@@ -74,6 +78,8 @@ const CrudItem = ({selectedCrud, item, onEdit }) => {
           ) : selectedCrud === "categories" ? (
             <CategoryCard data={item} />
           ) : selectedCrud === "genres" ? (
+            <GenreCard data={item} />
+          ) : selectedCrud === "showcase" ? (
             <GenreCard data={item} />
           ) : (
             <ProductCard data={item} />

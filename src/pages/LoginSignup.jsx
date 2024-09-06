@@ -19,7 +19,6 @@ const LoginSignup = () => {
         try {
             const response = await SubmitLogin({ login: loginName, password: loginPassword });
 
-            console.log(response.data);
         } catch (error) {
             console.error(error);
         }

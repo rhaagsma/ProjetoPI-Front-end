@@ -87,7 +87,7 @@ const CreateProduct = ({handleHide, data}) => {
       setProductPrice(data.price);
       setProductQuantity(data.quantity);
       setSelectedBands(data.bands.map(band => band.id));
-      setSelectedCategory(data.category.id);
+      setSelectedCategory(data.category.map(category => category.id));
       setProductImage(data.image);
     }
   }, [data]);
@@ -150,11 +150,18 @@ const CreateProduct = ({handleHide, data}) => {
             {existsBands.map((band) => (
               <label key={band.id} className="inline-flex items-center mr-6">
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="band"
                   value={band.id}
-                  onChange={handleBandChange}
-                  className="form-radio h-4 w-4 text-blue-600"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedBands([...selectedBands, e.target.value]);
+                    } else {
+                      setSelectedBands(selectedBands.filter((id) => id !== e.target.value));
+                      
+                    }
+                  }}
+                  className="form-checkbox h-4 w-4 text-blue-600"
                 />
                 <span className="ml-2 text-gray-700">{band.name}</span>
               </label>
@@ -166,19 +173,25 @@ const CreateProduct = ({handleHide, data}) => {
             Category
           </label>
           <div>
-            {existCategories.map((category) => (
-              <label key={category.id} className="inline-flex items-center mr-6">
-                <input
-                  type="radio"
-                  name="category"
-                  value={category.id}
-                  onChange={handleCategoryChange}
-                  className="form-radio h-4 w-4 text-blue-600"
-                />
-                <span className="ml-2 text-gray-700">{category.name}</span>
-              </label>
-            ))}
-          </div>
+          {existCategories.map((category) => (
+            <label key={category.id} className="inline-flex items-center mr-6">
+              <input
+                type="radio"
+                name="category"
+                value={category.id}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedBands([...selectedBands, e.target.value]);
+                  } else {
+                    setSelectedBands(selectedBands.filter((id) => id !== e.target.value));
+                  }
+                }}
+                className="form-radio h-4 w-4 text-blue-600"
+              />
+              <span className="ml-2 text-gray-700">{category.name}</span>
+            </label>
+          ))}
+        </div>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productQuantity">

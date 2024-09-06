@@ -4,9 +4,10 @@ import CreateProduct from "./CreateProduct";
 import CreateGenre from "./CreateGenre";
 import CreateCategory from "./CreateCategory";
 import CreateBand from "./CreateBand";
+import CreateShowCase from "./CreateShowCase";
 import { Button } from "src/components/ui/button";
 
-const CrudContent = ({ selectedCrud, initialData, onEdit }) => {
+const CrudContent = ({ selectedCrud, initialData }) => {
 
   const [showCreateItem, setShowCreateItem] = useState(false);
 
@@ -56,6 +57,8 @@ const CrudContent = ({ selectedCrud, initialData, onEdit }) => {
             <CreateCategory  handleHide={handleHideCreateItem} />
           ) : selectedCrud === "bands" ? (
             <CreateBand  handleHide={handleHideCreateItem} />
+          ) :  selectedCrud === "showcase" ? (
+            <CreateShowCase  handleHide={handleHideCreateItem} />
           ) : null}
 
         </div>

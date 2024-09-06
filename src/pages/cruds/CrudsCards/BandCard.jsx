@@ -3,6 +3,7 @@ import React from 'react'
 const BandCard = ({ data }) => {
   const genres = data.genres;
   const products = data.products;
+  console.log(data)
   return (
     <div className="flex justify-center items-center ">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">

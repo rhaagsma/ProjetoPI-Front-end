@@ -16,7 +16,8 @@ api.interceptors.request.use(async (config) => {
     config.url.startsWith("/product/") ||
      config.url.startsWith("/band") ||
       config.url.startsWith("/category") ||
-        config.url.startsWith("/genre")
+        config.url.startsWith("/genre") ||
+        config.url.startsWith("/showcase")
     )){
     return config;
   }
@@ -26,6 +27,58 @@ api.interceptors.request.use(async (config) => {
   }
   return config;
 });
+//showcase
+async function getAllShowCases() {
+  return await api
+    .get("/showcase", {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
+async function getShowCase(id) {
+  return await api
+    .get(`/showcase/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
+async function saveShowCase(dataForm) {
+  return await api
+    .post("/showcase", dataForm, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
+
+async function updateShowCase(id, dataForm) {
+  return await api
+    .put(`/showcase/${id}`, dataForm, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
+
+async function deleteShowCase(id) {
+  return await api
+    .delete(`/showcase/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
 
 // Product API
 async function getAllProduct() {
@@ -343,4 +396,10 @@ export {
   saveCategory,
   updateCategory,
   deleteCategory,
+
+  getShowCase,
+  getAllShowCases,
+  saveShowCase,
+  updateShowCase,
+  deleteShowCase,
 };
