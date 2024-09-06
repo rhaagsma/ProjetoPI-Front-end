@@ -7,7 +7,7 @@ import CreateBand from "./CreateBand";
 import { Button } from "src/components/ui/button";
 
 const CrudContent = ({ selectedCrud, initialData, onEdit }) => {
-  
+
   const [showCreateItem, setShowCreateItem] = useState(false);
 
   const handleShowCreateItem = () => {
@@ -26,7 +26,9 @@ const CrudContent = ({ selectedCrud, initialData, onEdit }) => {
         </h2>
       </div>
 
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        
         {initialData.length ? (
           initialData.map(item => (
             <CrudItem key={item.id} selectedCrud={selectedCrud} item={item} />

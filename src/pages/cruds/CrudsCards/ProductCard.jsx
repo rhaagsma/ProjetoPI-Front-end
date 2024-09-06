@@ -4,6 +4,7 @@ import Image from '../Image'
 
 const ProductCard = ({ data }) => {
   const category = data.category;
+  const bands = data.bands;
   console.log(data);
   return (
     <div className="flex justify-center items-center ">
@@ -31,7 +32,7 @@ const ProductCard = ({ data }) => {
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Bands</label>
           <ul>
-            {data.bands.map((band) => (
+            {bands.map((band) => (
               <li key={band.id}>{band.name}</li>
             ))}
           </ul>

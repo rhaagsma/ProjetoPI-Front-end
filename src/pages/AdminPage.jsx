@@ -2,16 +2,85 @@ import React, { useState, useEffect, useContext } from "react";
 import {Button} from "src/components/ui/button";
 import { Context } from 'src/services/context';
 import CrudContent from "./cruds/CrudContent";
-import { getAllBands, getAllCategories, getAllGenres, getAllProduct } from "src/services/http-commons";
+import { 
+        getCategory, getBand, getGenre, getProduct,
+        getAllBands, getAllCategories, getAllGenres, getAllProduct 
+        } from "src/services/http-commons";
 const AdminPage = () => {
 
   const [selectedCrud, setSelectedCrud] = useState("products");
   const [data, setData] = useState([]);
 
-  const fetchData = async (endpoint) => {
-      const response = await endpoint();
-        setData(response);
+  const fetchBand = async (response) => {
+    if (response.bands && response.bands.length > 0) {
+      const bands = [];
+      for (let i = 0; i < response.bands.length; i++) {
+        const band = await getBand(response.bands[i]);
+        bands.push(band);
+      }
+      return { bands: bands };
     }
+  }
+  
+  
+  const fetchCategory = async (response) => {
+    if (response.category) {
+      const category = await getCategory(response.category);
+      return { category: category };
+    }
+
+  }
+  
+  const fetchGenre = async (response) => {
+    if (response.genres && response.genres.length > 0) {
+      const genres = [];
+      for (let i = 0; i < response.genres.length; i++) {
+        const genre = await getGenre(response.genres[i]);
+        genres.push(genre);
+      }
+      return { genres: genres };
+    }
+  }
+  
+  const fetchProduct = async (response) => {
+    if (response.products && response.products.length > 0) {
+      const products = [];
+      for (let i = 0; i < response.products.length; i++) {
+        const product = await getProduct(response.products[i]);
+        products.push(product);
+      }
+      return { products: products };
+    }
+  }
+  const fetchData = async (endpoint) => {
+    const data = await endpoint();
+    console.log(data);
+    let updatedResponse = { ...data };
+  
+    if (selectedCrud === "products") {
+      updatedResponse = { ...updatedResponse, ...await fetchGenre(updatedResponse) };
+      updatedResponse = { ...updatedResponse, ...await fetchBand(updatedResponse) };
+      updatedResponse = { ...updatedResponse, ...await fetchCategory(updatedResponse) };
+
+
+    } else if (selectedCrud === "bands") {
+      updatedResponse = { ...updatedResponse, ...await fetchGenre(updatedResponse) };
+      updatedResponse = { ...updatedResponse, ...await fetchProduct(updatedResponse) };
+
+
+    } else if (selectedCrud === "genres") {
+      updatedResponse = { ...updatedResponse, ...await fetchGenre(updatedResponse) };
+      updatedResponse = { ...updatedResponse, ...await fetchBand(updatedResponse) };
+
+
+    } else if (selectedCrud === "categories") {
+      updatedResponse = { ...updatedResponse, ...await fetchCategory(updatedResponse) };
+
+    }
+    
+    setData(updatedResponse);
+    console.log(updatedResponse);
+  };
 
   useEffect(() => {
     if (selectedCrud === "products") {
@@ -28,17 +97,6 @@ const AdminPage = () => {
   const handleButtonClick = (crud) => {
     setSelectedCrud(crud);
   }
-  const handleEdit = async () => {
-    try {
-      
-      const updatedItems = await fetchData(getSelectedEndpoint());
-  
-      setData(updatedItems);
-    } catch (error) {
-      
-      console.error('Error fetching updated items:', error);
-    }
-  };
   
   const getSelectedEndpoint = () => {
     switch (selectedCrud) {
@@ -71,7 +129,7 @@ const AdminPage = () => {
           Manage Categories
         </Button>
       </div>
-      <CrudContent selectedCrud={selectedCrud} initialData={data} onEdit= {handleEdit}/>
+      <CrudContent selectedCrud={selectedCrud} initialData={data}/>
     </div>
   )
 }

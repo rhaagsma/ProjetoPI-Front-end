@@ -48,8 +48,7 @@ const CreateProduct = ({handleHide, data}) => {
 
     try {
       if (data) {
-        console.log(productData)
-        console.log(data.id)
+
         const response = await updateProduct(data.id, productData);
         if (!response.ok) {
           throw new Error('Failed to update product');
@@ -81,6 +80,7 @@ const CreateProduct = ({handleHide, data}) => {
     fetchCategories();
 
     if (data) {
+
       console.log(data)
       setProductName(data.name);
       setProductDescription(data.description);
@@ -93,12 +93,12 @@ const CreateProduct = ({handleHide, data}) => {
   }, [data]);
 
   const handleBandChange = (e) => {
-    console.log(e.target.value)
+    
     setSelectedBands([...selectedBands, e.target.value]);
   }
   
   const handleCategoryChange = (e) => {
-    console.log(e.target.value)
+    
     setSelectedCategory(e.target.value);
   }
   

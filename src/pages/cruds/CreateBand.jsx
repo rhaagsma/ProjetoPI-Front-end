@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from 'src/components/ui/button'
-import { getAllGenres, saveBand} from 'src/services/http-commons'
-import { Input } from 'src/components/ui/input'
+import React, { useEffect, useState } from 'react';
+import { Button } from 'src/components/ui/button';
+import { getAllGenres, saveBand, updateBand } from 'src/services/http-commons';
+import { Input } from 'src/components/ui/input';
 
-export default function CreateBand() {
+const CreateBand = ({ handleHide, data }) => {
   const [bandName, setBandName] = useState('');
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [existGenres, setExistsGenres] = useState([]);
+  
 
   const fetchGenres = async () => {
     try {
@@ -19,36 +20,51 @@ export default function CreateBand() {
 
   const handleSaveBand = async (e) => {
     e.preventDefault();
-    console.log(selectedGenres);
-    const band = {
+    
+    const bandData = {
       name: bandName,
-      genres: selectedGenres
+      genres: selectedGenres,
+      products: data.products
     }
 
     try {
-      const response = await saveBand(band);
+      if (data) {
+        console.log(bandData)
+        const response = await updateBand(data.id, bandData);
+        if (!response.ok) {
+          throw new Error('Failed to update band');
+        }
+        else{
+          console.log(response);
+        }
 
-      if (!response.ok) {
-        throw new Error('Failed to save band');
+      }else {
+        const response = await saveBand(bandData);
+
+        if (!response.ok) {
+          throw new Error('Failed to save band');
+        }
+
+        setBandName('');
+        setSelectedGenres([]);
       }
-
-      setBandName('');
-      setSelectedGenres([]);
-
       console.log('Band saved successfully');
     } catch (error) {
       console.error('Error saving band:', error);
     }
   }
+  
 
   useEffect(() => {
-    fetchGenres()
-  }, []);
+    fetchGenres();
 
-  const handleGenreChange = (e) => {
-    
-    setSelectedGenres([...selectedGenres, e.target.value]);
-  }
+    if (data) {
+      
+      console.log(data)
+      setBandName(data.name);
+      setSelectedGenres(data.genres.map((genre) => genre.id));
+    }
+  }, [data]);
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -74,11 +90,19 @@ export default function CreateBand() {
             {existGenres.map((genre) => (
               <label key={genre.id} className="inline-flex items-center mr-6">
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="genre"
                   value={genre.id}
-                  onChange={handleGenreChange}
-                  className="form-radio h-4 w-4 text-blue-600"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedGenres([...selectedGenres, e.target.value]);
+                      console.log(selectedGenres)
+                    } else {
+                      setSelectedGenres(selectedGenres.filter((id) => id !== e.target.value));
+                      
+                    }
+                  }}
+                  className="form-checkbox h-4 w-4 text-blue-600"
                 />
                 <span className="ml-2 text-gray-700">{genre.name}</span>
               </label>
@@ -87,11 +111,15 @@ export default function CreateBand() {
         </div>
 
         <div className="flex items-center justify-between">
-          <Button onClick={(e) => handleSaveBand(e)} >
-          Save Band
+          <Button onClick={handleSaveBand}>
+            {data ? 'Update Product' : 'Save Product'}
           </Button>
+          <Button onClick={handleHide}>Cancel</Button>
         </div>
+
       </form>
     </div>
   )
 }
+
+export default CreateBand;
