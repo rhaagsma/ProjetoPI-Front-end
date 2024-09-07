@@ -6,6 +6,7 @@ import { Input } from 'src/components/ui/input';
 const CreateGenre = ({handleHide, data}) => {
   const [genreName, setGenreName] = useState('');
 
+
   const handleSaveGenre = async (e) => {
       e.preventDefault();
       const genreData = {
@@ -37,6 +38,7 @@ const CreateGenre = ({handleHide, data}) => {
     
     if (data) {
       setGenreName(data.name)
+
     }
 
   }, [data]);

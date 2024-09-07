@@ -28,7 +28,7 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 //showcase
-async function getAllShowCases() {
+async function getAllShowcases() {
   return await api
     .get("/showcase", {
       headers: { "Content-Type": "application/json" },
@@ -36,7 +36,7 @@ async function getAllShowCases() {
     .then((response) => response.data);
 }
 
-async function getShowCase(id) {
+async function getShowcase(id) {
   return await api
     .get(`/showcase/${id}`, {
       headers: { "Content-Type": "application/json" },
@@ -44,7 +44,7 @@ async function getShowCase(id) {
     .then((response) => response.data);
 }
 
-async function saveShowCase(dataForm) {
+async function saveShowcase(dataForm) {
   return await api
     .post("/showcase", dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -56,7 +56,7 @@ async function saveShowCase(dataForm) {
     });
 }
 
-async function updateShowCase(id, dataForm) {
+async function updateShowcase(id, dataForm) {
   return await api
     .put(`/showcase/${id}`, dataForm, {
       headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ async function updateShowCase(id, dataForm) {
     });
 }
 
-async function deleteShowCase(id) {
+async function deleteShowcase(id) {
   return await api
     .delete(`/showcase/${id}`, {
       headers: { "Content-Type": "application/json" },
@@ -397,9 +397,9 @@ export {
   updateCategory,
   deleteCategory,
 
-  getShowCase,
-  getAllShowCases,
-  saveShowCase,
-  updateShowCase,
-  deleteShowCase,
+  getShowcase,
+  getAllShowcases,
+  saveShowcase,
+  updateShowcase,
+  deleteShowcase,
 };

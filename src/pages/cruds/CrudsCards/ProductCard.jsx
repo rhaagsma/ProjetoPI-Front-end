@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button } from 'src/components/ui/button'
-import Image from '../Image'
+
 
 const ProductCard = ({ data }) => {
   const category = data.category;
@@ -12,7 +11,7 @@ const ProductCard = ({ data }) => {
       <div className="w-full max-w-md p-5 bg-white rounded-lg shadow-md">
 
         <div className="mb-4">
-          <img src={data.image}/>
+          <img alt = 'batata' src={data.image}/>
         </div>
 
         <div className="mb-4">

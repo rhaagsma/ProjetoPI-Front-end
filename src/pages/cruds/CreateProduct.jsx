@@ -10,9 +10,10 @@ const CreateProduct = ({handleHide, data}) => {
   const [productPrice, setProductPrice] = useState('');
   const [productQuantity, setProductQuantity] = useState('');
   const [selectedBands, setSelectedBands] = useState([]);
+  const [existsBands, setExistsBands] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [productImage, setProductImage] = useState('');
-  const [existsBands, setExistsBands] = useState([]);
+  
   const [existCategories, setExistCategories] = useState([]);
 
   const fetchBands = async () => {
@@ -81,7 +82,6 @@ const CreateProduct = ({handleHide, data}) => {
 
     if (data) {
 
-      console.log(data)
       setProductName(data.name);
       setProductDescription(data.description);
       setProductPrice(data.price);
@@ -91,16 +91,6 @@ const CreateProduct = ({handleHide, data}) => {
       setProductImage(data.image);
     }
   }, [data]);
-
-  const handleBandChange = (e) => {
-    
-    setSelectedBands([...selectedBands, e.target.value]);
-  }
-  
-  const handleCategoryChange = (e) => {
-    
-    setSelectedCategory(e.target.value);
-  }
   
   return (
     <div className="flex justify-center items-center h-screen">

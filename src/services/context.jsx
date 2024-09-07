@@ -7,7 +7,7 @@ import { register,
           getAllBands,
           getAllGenres,
           getAllCategories,
-          getAllShowCases,
+          getAllShowcases,
         } from './http-commons.js';
 
 const Context = createContext({});
@@ -57,13 +57,13 @@ function AuthProvider({ children }) {
   async function GetAllCategories(){ 
     await getAllCategories();
   }
-  async function GetAllShowCases(){ 
-    await getAllShowCases();
+  async function GetAllShowcases(){ 
+    await getAllShowcases();
   }
 
   return (
     <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated, Logout,
-                              GetAllProduct, GetAllBands, GetAllGenres, GetAllCategories, GetAllShowCases
+                              GetAllProduct, GetAllBands, GetAllGenres, GetAllCategories, GetAllShowcases
                               }}>
       {children}
     </Context.Provider>

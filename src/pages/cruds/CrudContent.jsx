@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CrudItem from "./CrudItem";
 import CreateProduct from "./CreateProduct";
 import CreateGenre from "./CreateGenre";
@@ -8,7 +8,7 @@ import CreateShowCase from "./CreateShowCase";
 import { Button } from "src/components/ui/button";
 
 const CrudContent = ({ selectedCrud, initialData }) => {
-
+  console.log(selectedCrud, initialData)
   const [showCreateItem, setShowCreateItem] = useState(false);
 
   const handleShowCreateItem = () => {
@@ -57,7 +57,7 @@ const CrudContent = ({ selectedCrud, initialData }) => {
             <CreateCategory  handleHide={handleHideCreateItem} />
           ) : selectedCrud === "bands" ? (
             <CreateBand  handleHide={handleHideCreateItem} />
-          ) :  selectedCrud === "showcase" ? (
+          ) :  selectedCrud === "showcases" ? (
             <CreateShowCase  handleHide={handleHideCreateItem} />
           ) : null}
 

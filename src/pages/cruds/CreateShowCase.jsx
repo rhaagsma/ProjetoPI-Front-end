@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'src/components/ui/button'
-import { saveShowCase, getAllProduct, getCategory } from 'src/services/http-commons'
+import { saveShowcase, getAllProduct, updateShowcase } from 'src/services/http-commons'
 import { Input } from 'src/components/ui/input'
 
-const CreateShowCase = ({ handleHide, categoryId }) => {
+const CreateShowCase = ({ handleHide, data }) => {
   const [carrosselName, setCarrosselName] = useState('');
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
-  const [category, setCategory] = useState(null);
+  const [existsProducts, setExistsProducts] = useState([]);
 
   const fetchProducts = async () => {
     try {
       const products = await getAllProduct();
-      setAllProducts(products);
+      setExistsProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
-    }
-  }
-
-  const fetchCategory = async () => {
-    try {
-      const category = await getCategory(categoryId);
-      setCategory(category);
-    } catch (error) {
-      console.error('Error fetching category:', error);
     }
   }
 
@@ -31,18 +21,28 @@ const CreateShowCase = ({ handleHide, categoryId }) => {
     const carrosselData = {
       name: carrosselName,
       products: selectedProducts,
-      category: categoryId
     }
 
     try {
-      const response = await saveShowCase(carrosselData);
+      if (data) {
+
+        const response = await updateShowcase(data.id, carrosselData);
+        if (!response.ok) {
+          throw new Error('Failed to update band');
+        }
+        else{
+          console.log(response);
+        }
+
+      }else {
+      const response = await saveShowcase(carrosselData);
       if (!response.ok) {
         throw new Error('Failed to save carrossel');
       }
 
       setCarrosselName('');
       setSelectedProducts([]);
-
+      }
       console.log('Carrossel saved successfully');
     } catch (error) {
       console.error('Error saving carrossel:', error);
@@ -51,16 +51,13 @@ const CreateShowCase = ({ handleHide, categoryId }) => {
 
   useEffect(() => {
     fetchProducts();
-    fetchCategory();
-  }, []);
 
-  const handleProductChange = (e) => {
-    if (e.target.checked) {
-      setSelectedProducts([...selectedProducts, e.target.value]);
-    } else {
-      setSelectedProducts(selectedProducts.filter((id) => id !== e.target.value));
+    if (data) {
+      setCarrosselName(data.name);
+      setSelectedProducts(data.products.map(product => product.id));
     }
-  }
+  }, [data]);
+
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -83,13 +80,21 @@ const CreateShowCase = ({ handleHide, categoryId }) => {
             Products
           </label>
           <div>
-            {allProducts.map((product) => (
+            {existsProducts.map((product) => (
               <label key={product.id} className="inline-flex items-center mr-6">
                 <input
                   type="checkbox"
                   name="product"
                   value={product.id}
-                  onChange={handleProductChange}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedProducts([...selectedProducts, e.target.value]);
+                      
+                    } else {
+                      setSelectedProducts(selectedProducts.filter((id) => id !== e.target.value));
+                      
+                    }
+                  }}
                   className="form-checkbox h-4 w-4 text-blue-600"
                 />
                 <span className="ml-2 text-gray-700">{product.name}</span>
@@ -97,10 +102,9 @@ const CreateShowCase = ({ handleHide, categoryId }) => {
             ))}
           </div>
         </div>
-
         <div className="flex items-center justify-between">
           <Button onClick={handleSaveCarrossel}>
-            Save Carrossel
+            {data ? 'Update Product' : 'Save Product'}
           </Button>
           <Button onClick={handleHide}>Cancel</Button>
         </div>

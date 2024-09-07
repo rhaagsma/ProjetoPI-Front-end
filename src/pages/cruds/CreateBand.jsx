@@ -96,7 +96,7 @@ const CreateBand = ({ handleHide, data }) => {
                   onChange={(e) => {
                     if (e.target.checked) {
                       setSelectedGenres([...selectedGenres, e.target.value]);
-                      console.log(selectedGenres)
+                      
                     } else {
                       setSelectedGenres(selectedGenres.filter((id) => id !== e.target.value));
                       
