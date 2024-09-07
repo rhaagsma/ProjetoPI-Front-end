@@ -18,7 +18,7 @@ const LoginSignup = () => {
         e.preventDefault();
         try {
             const response = await SubmitLogin({ login: loginName, password: loginPassword });
-
+            console.log(response);
         } catch (error) {
             console.error(error);
         }

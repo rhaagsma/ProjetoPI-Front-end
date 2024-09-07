@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button } from 'src/components/ui/button'
-import Image from '../Image'
+
 
 const CategoryCard = ({ data }) => {
   return (

@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from "react"
+import React, { useState } from "react"
 import { Button } from "src/components/ui/button"
-import { getCategory, getBand, getGenre, getProduct,
-         deleteProduct, deleteBand, deleteCategory, deleteGenre
+import {
+         deleteProduct, deleteBand, deleteCategory, deleteGenre,
+         deleteShowcase
         } from "src/services/http-commons"
 import CreateProduct from "./CreateProduct";
 import CreateBand from "./CreateBand";
@@ -13,6 +14,7 @@ import ProductCard from "./CrudsCards/ProductCard";
 import BandCard from "./CrudsCards/BandCard.jsx";
 import CategoryCard from "./CrudsCards/CategoryCard";
 import GenreCard from "./CrudsCards/GenreCard";
+import ShowCaseCard from "./CrudsCards/ShowCaseCard";
 
 import Modal from "./modal";
 
@@ -38,7 +40,7 @@ const CrudItem = ({selectedCrud, item}) => {
             await deleteGenre(item.id);
             break;
           case 'showcase':
-            await deleteGenre(item.id);
+            await deleteShowcase(item.id);
             break;
           default:
             break;
@@ -63,8 +65,8 @@ const CrudItem = ({selectedCrud, item}) => {
             <CreateCategory data={item} />
           ) : selectedCrud === "genres" ? (
             <CreateGenre data={item} />
-          ) : selectedCrud === "showcase" ? (
-            <CreateGenre data={item} />
+          ) : selectedCrud === "showcases" ? (
+            <CreateShowCase data={item} />
           ) : null}
 
         </Modal>
@@ -79,8 +81,8 @@ const CrudItem = ({selectedCrud, item}) => {
             <CategoryCard data={item} />
           ) : selectedCrud === "genres" ? (
             <GenreCard data={item} />
-          ) : selectedCrud === "showcase" ? (
-            <GenreCard data={item} />
+          ) : selectedCrud === "showcases" ? (
+            <ShowCaseCard data={item} />
           ) : (
             <ProductCard data={item} />
           )}
