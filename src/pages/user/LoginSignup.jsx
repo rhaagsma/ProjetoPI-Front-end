@@ -2,7 +2,9 @@ import React, { useState, useContext } from 'react';
 import { Context } from 'src/services/context';
 import { Button } from 'src/components/ui/button';
 
+
 const LoginSignup = () => {
+    const [showRegisterAdmin, setShowRegisterAdmin] = useState(false);
     const [loginName, setLoginName] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
 
@@ -11,7 +13,7 @@ const LoginSignup = () => {
     const [registerTelefone, setRegisterTelefone] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
 
-    const { SubmitLogin, SubmitRegister } = useContext(Context);
+    const { SubmitLogin, SubmitRegister, SubmitAdminRegister } = useContext(Context);
     const [feedbackMessage, setFeedbackMessage] = useState('');
     
     const handleLogin = async (e) => {
@@ -22,7 +24,26 @@ const LoginSignup = () => {
         } catch (error) {
             console.error(error);
         }
-    };
+    }
+    const handleAdminRegister = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const user = { 
+                login: registerName, 
+                email: registerEmail, 
+                telephone: registerTelefone,
+                password: registerPassword 
+            };
+            const response = await SubmitAdminRegister(user);
+
+            console.log(response);
+            setFeedbackMessage("Registration successful!");
+        } catch (error) {
+            console.error(error);
+            setFeedbackMessage("Registration failed. Please try again.");
+        }
+    }
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -35,14 +56,19 @@ const LoginSignup = () => {
                 password: registerPassword 
             };
             const response = await SubmitRegister(user);
-            console.log(user);
+
             console.log(response);
             setFeedbackMessage("Registration successful!");
         } catch (error) {
             console.error(error);
             setFeedbackMessage("Registration failed. Please try again.");
         }
-    };
+    }
+    const ShowAdmin = () => {
+        
+            setShowRegisterAdmin(prevState => !prevState);
+
+    }
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -64,8 +90,7 @@ const LoginSignup = () => {
 
                 <div className="flex items-center justify-center w-full max-w-xs h-40">
 
-                    <h2 className="px-4 text-2xl font-bold text-gray-600">ou</h2>
-
+                <button onClick={ShowAdmin} className="px-4 text-2xl font-bold text-gray-600 hover:text-gray-800 transition duration-300 ease-in-out">ou</button>
                 </div>
 
                 <div className="w-full max-w-md">
@@ -77,13 +102,21 @@ const LoginSignup = () => {
                             <input type="text" placeholder="Telefone" value={registerTelefone} onChange={(e) => setRegisterTelefone(e.target.value)} className="p-2 border border-gray-300 rounded-md" />
                             <input type="password" placeholder="Senha" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} className="p-2 border border-gray-300 rounded-md" />
                             <Button className="w-full cursor-pointer">Cadastrar</Button>
+                            
                     {feedbackMessage && <p className="text-sm text-green-600">{feedbackMessage}</p>}
+                    
                 </form>
+
+                    </div>
+                </div>
+                
             </div>
+            {showRegisterAdmin &&
+            <Button onClick = {handleAdminRegister}> CadastrarAdmin </Button>
+            
+            }
         </div>
-            </div>
-        </div>
-    );
-};
+    )
+}
 
 export default LoginSignup;

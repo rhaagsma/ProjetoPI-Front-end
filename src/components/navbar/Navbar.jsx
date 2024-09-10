@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState} from 'react'
 
 import logo from "../assets/Disco logo.png"
 import carrinho from "../assets/carrinho.png"
@@ -15,14 +15,11 @@ import {
 } from "../ui/navigation-menu"
 import { bands } from '../../pages/fake'
 
+
 const Navbar = () => {
     const[menu,setMenu] = useState("Home");
-    const { authenticated } = useContext(Context);
+    const token = localStorage.getItem("token");
 
-    const handleLogout = () => {
-        authenticated = false;
-        localStorage.removeItem('token');
-      };
 
     return (
         <nav className="w-full bg-[#21242D] flex items-center justify-center px-4 py-2">
@@ -46,7 +43,7 @@ const Navbar = () => {
                         {/* <li onClick={()=>{setMenu("Banda")}}><Link className= "text-white font-semibold"style={{ textDecoration: "none"}} to="/Banda">Banda</Link>{menu==="Banda"?<hr/>:<></>}</li> */}
                 </ul>
                 <div className="w-44 flex gap-4 items-center justify-end">
-                {authenticated ? (
+                {token ? (
                     <div className="relative">
                     <Link to='/profile'>
                         <button className='px-4 py-2 flex rounded-full items-center justify-center bg-white'>

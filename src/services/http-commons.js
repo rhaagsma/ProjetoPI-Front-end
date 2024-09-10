@@ -10,23 +10,65 @@ api.interceptors.request.use(async (config) => {
 
   const token = localStorage.getItem("token");
 
-/*  if(config.url && (config.url.startsWith("/auth/register") ||
-   config.url.startsWith("/auth/login") ||
-    config.url.startsWith("/product") ||
-    config.url.startsWith("/product/") ||
-     config.url.startsWith("/band") ||
-      config.url.startsWith("/category") ||
-        config.url.startsWith("/genre") ||
-        config.url.startsWith("/showcase")
-    )){
-    return config;
-  }
-*/
   if (token && config.headers) {
     config.headers.authorization = `Bearer ${token}`;
   }
   return config;
 });
+//address
+
+async function getAllAddresses() {
+  return await api
+    .get("/address", {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
+async function getAddress(id) {
+  return await api
+    .get(`/address/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response.data);
+}
+
+async function saveAddress(dataForm) {
+  return await api
+    .post("/address", dataForm, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
+
+async function updateAddress(id, dataForm) {
+  return await api
+    .put(`/address/${id}`, dataForm, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
+
+async function deleteAddress(id) {
+  return await api
+    .delete(`/address/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      alert("Ocorreu um erro na API:\n" + error);
+      console.log(error);
+    });
+}
+
 //showcase
 async function getAllShowcases() {
   return await api
@@ -146,6 +188,19 @@ async function register(dataForm) {
   console.log(dataForm);
   try {
     const response = await api.post("/auth/register", dataForm, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response;
+  } catch (error) {
+    alert("Ocorreu um erro na API:\n" + error);
+    
+    return null;
+  }
+}
+async function registerAdmin(dataForm) {
+  console.log(dataForm);
+  try {
+    const response = await api.post("/auth/registerAdmin", dataForm, {
       headers: { "Content-Type": "application/json" },
     });
     return response;
@@ -371,7 +426,7 @@ export {
   deleteUser,
   getUser,
   updateUser,
-  
+  registerAdmin,
 
   getProduct,
   getAllProduct,
@@ -402,4 +457,10 @@ export {
   saveShowcase,
   updateShowcase,
   deleteShowcase,
+
+  getAddress,
+  getAllAddresses,
+  saveAddress,
+  updateAddress,
+  deleteAddress,
 };
