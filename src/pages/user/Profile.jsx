@@ -46,9 +46,13 @@ const Profile = () => {
 
     const fetchRelatedData = async (data) => {
       const addresses = await getAllAddresses();
+
       return data.map(userAddress => {
-        const relatedAddress = addresses.filter(address => address.id === userAddress.addressId);
-        return relatedAddress ? relatedAddress : null;
+        const relatedAddress = addresses.filter(address => address.id === userAddress);
+
+        console.log('addresses', relatedAddress);
+
+        return relatedAddress;
       })
     }
     const handleUpdate = async (e) => {
@@ -72,13 +76,14 @@ const Profile = () => {
 
         const response = await getUser(userId);
         if (response) {
-
+            console.log(response)
             setName(response.login);
             setEmail(response.email);
             setTelephone(response.telephone);
             setAddresses(await fetchRelatedData(response.addresses));
             setRole(response.role);
             setOrders(response.order);
+            
             
         }
         
@@ -156,7 +161,7 @@ const Profile = () => {
               >
                 Delete account
               </Button>
-              {role === "admin" && (
+              {role === "ADMIN" && (
                 <Link to="/adminPage">
                   <Button className="w-full cursor-pointer">
                     Admin Page

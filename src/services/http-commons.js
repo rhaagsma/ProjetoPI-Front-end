@@ -204,6 +204,19 @@ async function register(dataForm) {
     return null;
   }
 }
+async function registerAdmin(dataForm) {
+  console.log(dataForm);
+  try {
+    const response = await api.post("/auth/registerAdmin", dataForm, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response;
+  } catch (error) {
+    alert("Ocorreu um erro na API:\n" + error);
+    
+    return null;
+  }
+}
 
 async function login(dataForm) {
   try {
@@ -420,7 +433,7 @@ export {
   deleteUser,
   getUser,
   updateUser,
-  
+  registerAdmin,
 
   getProduct,
   getAllProduct,

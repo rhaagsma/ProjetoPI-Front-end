@@ -8,6 +8,7 @@ import { register,
           getAllGenres,
           getAllCategories,
           getAllShowcases,
+          registerAdmin,
         } from './http-commons.js';
 
 const Context = createContext({});
@@ -20,7 +21,9 @@ function AuthProvider({ children }) {
   async function SubmitRegister(data) {
     register(data);
   }
-
+  async function SubmitAdminRegister(data) {
+    registerAdmin(data);
+  }
  
   async function SubmitLogin(data) {
      //salvamos a resposta da funçao "submitLogin" em uma constante e validamos se existe um "token"
@@ -61,7 +64,7 @@ function AuthProvider({ children }) {
   }
 
   return (
-    <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated, Logout,
+    <Context.Provider value={{ SubmitRegister, SubmitLogin, authenticated, Logout, SubmitAdminRegister,
                               GetAllProduct, GetAllBands, GetAllGenres, GetAllCategories, GetAllShowcases
                               }}>
       {children}

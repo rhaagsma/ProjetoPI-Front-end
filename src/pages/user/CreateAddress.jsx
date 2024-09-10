@@ -42,19 +42,19 @@ const AddressCard = ({ user, data, handleHide }) => {
             throw new Error('Failed to save address');
           }
         }
-        setAddressname('')
-        setAddresscep('')
-        setAddressstreet('')
-        setAddressnumber('')
-        setAddresscity('')
-        setAddresscomplement('')
-        setAddressneighbourhood('')
-        setAddressstate('')
-        setAddresscountry('')
+        setAddressname('');
+        setAddresscep('');
+        setAddressstreet('');
+        setAddressnumber('');
+        setAddresscity('');
+        setAddresscomplement('');
+        setAddressneighbourhood('');
+        setAddressstate('');
+        setAddresscountry('');
   
-        console.log('Product saved successfully');
+        console.log('Address saved successfully');
       } catch (error) {
-        console.error('Error saving product:', error);
+        console.error('Error saving address:', error);
       }
 
     }
@@ -74,6 +74,7 @@ const AddressCard = ({ user, data, handleHide }) => {
         setAddressneighbourhood(data.neighbourhood)
         setAddressstate(data.state)
         setAddresscountry(data.country)
+      
     }
   }, [data]);
 
@@ -99,7 +100,7 @@ const AddressCard = ({ user, data, handleHide }) => {
             CEP
           </label>
           <Input
-            type="text"
+            type="number"
             id="cep"
             value={addresscep}
             onChange={(e) => setAddresscep(e.target.value)}
@@ -108,7 +109,7 @@ const AddressCard = ({ user, data, handleHide }) => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productPrice">
+          <label className="block text-gray-700 text-sm font-bold mb-2" >
             Street
           </label>
           <Input
@@ -120,7 +121,7 @@ const AddressCard = ({ user, data, handleHide }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bands">
+          <label className="block text-gray-700 text-sm font-bold mb-2" >
             Number
           </label>
           <Input
@@ -134,7 +135,7 @@ const AddressCard = ({ user, data, handleHide }) => {
         </div>
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
             City
           </label>
           <Input
@@ -146,7 +147,7 @@ const AddressCard = ({ user, data, handleHide }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productQuantity">
+          <label className="block text-gray-700 text-sm font-bold mb-2" >
             Complement
           </label>
           <Input
@@ -159,7 +160,7 @@ const AddressCard = ({ user, data, handleHide }) => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productImage">
+          <label className="block text-gray-700 text-sm font-bold mb-2" >
             neighbourhood
           </label>
           <Input
@@ -171,7 +172,7 @@ const AddressCard = ({ user, data, handleHide }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productImage">
+          <label className="block text-gray-700 text-sm font-bold mb-2" >
             state
           </label>
           <Input
@@ -183,7 +184,7 @@ const AddressCard = ({ user, data, handleHide }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productImage">
+          <label className="block text-gray-700 text-sm font-bold mb-2" >
             country
           </label>
           <Input
