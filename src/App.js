@@ -1,7 +1,7 @@
 import './App.css';
 import './globals.css';
 import Navbar from './components/navbar/Navbar';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
@@ -29,7 +29,14 @@ function App() {
             </Route>
             <Route path="/login" element={<LoginSignup/>}/>
             <Route path="/profile" element={<Profile/>}/>
-            <Route path="/adminPage" element={<AdminPage/>}/>
+            <Route 
+              path="/adminPage"             
+              element={
+                <PrivateRoute>
+                  <AdminPage />
+                </PrivateRoute>
+              }
+            />
             <Route path="/cart" element={
                 <Cart />
             }/>

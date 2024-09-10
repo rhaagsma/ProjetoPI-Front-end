@@ -32,31 +32,24 @@ const AddressCard = ({ data, user }) => {
         <p>{data.CEP}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">Street:</h3>
         <p>{data.street}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">Number:</h3>
         <p>{data.number}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">City:</h3>
         <p>{data.city}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">Complement:</h3>
         <p>{data.complement}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">Neighbourhood:</h3>
         <p>{data.neighbourhood}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">State:</h3>
         <p>{data.state}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-gray-700 text-sm font-bold mb-2">Country:</h3>
         <p>{data.country}</p>
       </div>
 

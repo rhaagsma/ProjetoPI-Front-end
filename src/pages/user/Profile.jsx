@@ -18,6 +18,7 @@ const Profile = () => {
     const [password, setPassword] = useState("");
     const [addresses, setAddresses] = useState([]);
     const userId = localStorage.getItem("userId");
+
     const [imageSrc, setImageSrc] = useState(gatio);
     const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
     const [isImageClicked, setIsImageClicked] = useState(false);

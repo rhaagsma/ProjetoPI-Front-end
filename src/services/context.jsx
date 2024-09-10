@@ -13,10 +13,9 @@ import { register,
 const Context = createContext({});
 
 function AuthProvider({ children }) {
-
+  
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(false);
-
 
   async function SubmitRegister(data) {
     register(data);
