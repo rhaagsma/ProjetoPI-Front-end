@@ -22,7 +22,9 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/special" element={<Special />} />
-            <Route exact path="/banda" element={<Products pageName="Banda"/>} />
+            <Route path="/banda" element={<Products pageName="Banda"/>}>
+              <Route path=':bandId' element={<Products pageName="Banda"/>}/>
+            </Route>
 
             <Route path="/product" element={<Product/>}>
               <Route path=':productId' element={<Product/>}/>

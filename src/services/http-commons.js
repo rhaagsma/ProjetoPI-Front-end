@@ -10,13 +10,6 @@ api.interceptors.request.use(async (config) => {
 
   const token = localStorage.getItem("token");
 
-  if(config.url && (config.url.startsWith("/auth/register") ||
-   config.url.startsWith("/auth/login")
-
-    )){
-    return config;
-  }
-
   if (token && config.headers) {
     config.headers.authorization = `Bearer ${token}`;
   }
