@@ -5,13 +5,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
-import LoginSignup from './pages/LoginSignup';
+import LoginSignup from './pages/user/LoginSignup';
 import Products from './pages/Products';
 import Footer from './components/footer/Footer';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/context';
-import Profile from './pages/Profile';
-import AdminPage from './pages/AdminPage';
+import Profile from './pages/user/Profile';
+import AdminPage from './pages/user/AdminPage';
 import Special from './components/hero/special';
 
 function App() {

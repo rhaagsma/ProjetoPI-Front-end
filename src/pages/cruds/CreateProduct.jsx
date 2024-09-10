@@ -5,6 +5,7 @@ import { Input } from 'src/components/ui/input'
 import Image from './Image'
 
 const CreateProduct = ({handleHide, data}) => {
+  
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -13,7 +14,6 @@ const CreateProduct = ({handleHide, data}) => {
   const [existsBands, setExistsBands] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [productImage, setProductImage] = useState('');
-  
   const [existCategories, setExistCategories] = useState([]);
 
   const fetchBands = async () => {

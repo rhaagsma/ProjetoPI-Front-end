@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button } from "src/components/ui/button";
 import { Context } from 'src/services/context';
-import CrudContent from "./cruds/CrudContent";
+import CrudContent from "../cruds/CrudContent";
 import { getAllBands, getAllCategories, getAllGenres, getAllProduct, getAllShowcases } from "src/services/http-commons";
 
 const AdminPage = () => {
@@ -30,7 +30,7 @@ const AdminPage = () => {
             bands: productBands,
             category: productCategories
           }
-        });
+        })
   
       case 'bands':
         const Genres = await getAllGenres();
