@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'src/components/ui/button'
-import { saveShowcase, getAllProduct, updateShowcase } from 'src/services/http-commons'
 import { Input } from 'src/components/ui/input'
+import { useToast } from 'src/hooks/use-toast'
+import { getAllProducts } from 'src/services/products'
+import { addShowcase, updateShowcase } from 'src/services/showcase'
 
-const CreateShowCase = ({ handleHide, data }) => {
+const CreateShowCase = ({ handleHide, data, refecth }) => {
+  const { toast } = useToast();
   const [carrosselName, setCarrosselName] = useState('');
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [existsProducts, setExistsProducts] = useState([]);
 
   const fetchProducts = async () => {
     try {
-      const products = await getAllProduct();
+      const products = await getAllProducts();
       setExistsProducts(products);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -27,21 +30,32 @@ const CreateShowCase = ({ handleHide, data }) => {
       if (data) {
 
         const response = await updateShowcase(data.id, carrosselData);
-        if (!response.ok) {
-          throw new Error('Failed to update band');
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível atualizar o carrossel. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return;
         }
         else{
           console.log(response);
         }
 
       }else {
-      const response = await saveShowcase(carrosselData);
-      if (!response.ok) {
-        throw new Error('Failed to save carrossel');
-      }
+        const response = await addShowcase(carrosselData);
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível adicionar o carrossel. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return
+        }
 
-      setCarrosselName('');
-      setSelectedProducts([]);
+        setCarrosselName('');
+        setSelectedProducts([]);
+        refecth();
       }
       console.log('Carrossel saved successfully');
     } catch (error) {
@@ -60,7 +74,7 @@ const CreateShowCase = ({ handleHide, data }) => {
 
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center">
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="carrosselName">

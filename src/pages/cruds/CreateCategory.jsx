@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "src/components/ui/button";
-import { saveCategory, updateCategory } from 'src/services/http-commons';
 import { Input } from 'src/components/ui/input';
+import { useToast } from 'src/hooks/use-toast';
+import { addCategory, updateCategory } from 'src/services/categories';
 
-const CreateCategory = ({handleHide, data}) => {
+const CreateCategory = ({handleHide, data, refecth}) => {
+  const { toast } = useToast();
   const [categoryName, setCategoryName] = useState('');
 
   const handleSaveCategory = async (e) => {
@@ -16,17 +18,28 @@ const CreateCategory = ({handleHide, data}) => {
       if (data) {
 
         const response = await updateCategory(data.id, categoryData);
-        if (!response.ok) {
-          throw new Error('Failed to update category');
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível atualizar a categoria. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return
         }
       } else {
         
-        const response = await saveCategory(categoryData);
-        if (!response.ok) {
-          throw new Error('Failed to save category');
+        const response = await addCategory(categoryData);
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível adicionar a categoria. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return
         }
       }
       setCategoryName('');
+      refecth();
 
       console.log('Category saved successfully');
     } catch (error) {
@@ -46,7 +59,7 @@ const CreateCategory = ({handleHide, data}) => {
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productName">
-            Name
+            Nome
           </label>
         <Input
           label="Category Name"
@@ -58,9 +71,9 @@ const CreateCategory = ({handleHide, data}) => {
 
         <div className="flex items-center justify-between">
           <Button onClick={handleSaveCategory}>
-            {data ? 'Update Category' : 'Save Category'}
+            {data ? 'Atualizar Categoria' : 'Adicionar Categoria'}
           </Button>
-          <Button onClick={handleHide}>Cancel</Button>
+          <Button onClick={handleHide}>Cancelar</Button>
         
           </div>
         </div>

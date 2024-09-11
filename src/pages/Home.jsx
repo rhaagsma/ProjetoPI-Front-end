@@ -1,14 +1,13 @@
 import React from "react"
 import Hero from "../components/hero/Hero"
-import Popular from "../components/popular/Popular"
+import AllProducts from "../components/popular/AllProducts"
 import Offers from "../components/offers/Offers"
 
 const Home = () => {
     return (
         <div className="home-container">
             <Hero/>
-            <Popular/>
-            <Offers/>
+            <AllProducts/>
         </div>
     )
 }

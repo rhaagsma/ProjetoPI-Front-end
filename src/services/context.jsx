@@ -1,50 +1,88 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom'
-import { register,
-          login,
+import {
           getAllProduct,
           getAllBands,
           getAllGenres,
           getAllCategories,
           getAllShowcases,
         } from './http-commons.js';
+import { isLogged, login, register } from './auth.js';
+import { useToast } from 'src/hooks/use-toast.js';
 
 const Context = createContext({});
 
 function AuthProvider({ children }) {
+  const { toast } = useToast();
 
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(false);
 
+  useEffect(() => {
+    async function checkAuth() {
+      const auth = await isLogged();
+      setAuthenticated(auth);
+    }
+    checkAuth();
+  }, [])
 
   async function SubmitRegister(data) {
-    register(data);
+    if(!data.login || !data.password || !data.email || !data.telephone){
+      toast({
+        title: 'Ops! Houve um erro',
+        description: 'Preencha todos os campos para realizar o login.',
+        variant: 'destructive',
+      })
+      return;
+    }
+
+    const res = await register(data);
+    if (res.error) {
+      toast({
+        title: 'Ops! Houve um erro',
+        description: 'Não foi possível realizar seu cadastro. Por favor, tente novamente.',
+        variant: 'destructive',
+      })
+      return;
+    }
+
+    setAuthenticated(true);
+    navigate('/');
   }
 
  
   async function SubmitLogin(data) {
-     //salvamos a resposta da funçao "submitLogin" em uma constante e validamos se existe um "token"
-    const responseData = await login(data);
-      if (responseData?.token && responseData?.userid) {
-       
-        //o "token" é armazenado no "localStorage" e o usuário é definido como autenticado.
-        localStorage.setItem('token', responseData.token);
-        localStorage.setItem('userId', responseData.userid);
-        setAuthenticated(true);
-        navigate('/');
-      }
-      else {
-        alert('Falha na autenticação');
-      }
-    
+    if(!data.login || !data.password){
+      toast({
+        title: 'Ops! Houve um erro',
+        description: 'Preencha todos os campos para realizar o login.',
+        variant: 'destructive',
+      })
+      return;
+    }
+
+    const res = await login(data);
+    if (res.error) {
+      toast({
+        title: 'Ops! Houve um erro',
+        description: 'Não foi possível realizar o login. Por favor, tente novamente.',
+        variant: 'destructive',
+      })
+      return;
+    }
+
+    setAuthenticated(true);
+    navigate('/');
   }
+
   async function Logout(){
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('@pidisco:token');
+    localStorage.removeItem('@pidisco:userId');
     setAuthenticated(false);
     navigate('/login');
   }
+  
   async function GetAllProduct(){ 
     await getAllProduct();
   }

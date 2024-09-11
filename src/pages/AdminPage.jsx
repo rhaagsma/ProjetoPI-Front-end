@@ -2,12 +2,16 @@ import React, { useState, useEffect, useContext } from "react";
 import { Button } from "src/components/ui/button";
 import { Context } from 'src/services/context';
 import CrudContent from "./cruds/CrudContent";
-import { getAllBands, getAllCategories, getAllGenres, getAllProduct, getAllShowcases } from "src/services/http-commons";
+import { getAllGenres } from "src/services/genres";
+import { getAllBands } from "src/services/bands";
+import { getAllProducts } from "src/services/products";
+import { getAllCategories } from "src/services/categories";
+import { getAllShowcases } from "src/services/showcase";
+import { cn } from "src/lib/utils";
 
 const AdminPage = () => {
-
-  const { GetAllProduct, GetAllBands, GetAllGenres, GetAllCategories, GetAllShowcases } = useContext(Context);
   const [selectedCrud, setSelectedCrud] = useState("products");
+  const [modalIsOpened, setModalIsOpened] = useState(false);
   const [data, setData] = useState({
     products: [],
     bands: [],
@@ -34,7 +38,7 @@ const AdminPage = () => {
   
       case 'bands':
         const Genres = await getAllGenres();
-        const Products = await getAllProduct();
+        const Products = await getAllProducts();
   
         return data.map(band => {
           const bandsGenres = Genres.filter(genre => band.genres && band.genres.includes(genre.id));
@@ -60,7 +64,7 @@ const AdminPage = () => {
         });
   
       case 'showcases':
-        const Productss = await getAllProduct();
+        const Productss = await getAllProducts();
   
         return data.map(showcase => {
           const showcaseProducts = Productss.filter(product => showcase.products && showcase.products.includes(product.id));
@@ -75,54 +79,64 @@ const AdminPage = () => {
         return data;
     }
   }
+
+  const fecth = async () => {
+    const resGenres = await getAllGenres();
+    const resBands = await getAllBands();
+    const resProduct = await getAllProducts();
+    const resCategories = await getAllCategories();
+    const resShowcases = await getAllShowcases();
+
+    setData({
+      products: await fetchRelatedData('products', resProduct),
+      bands: await fetchRelatedData('bands', resBands),
+      genres: await fetchRelatedData('genres', resGenres),
+      categories: resCategories,
+      showcases: await fetchRelatedData('showcases', resShowcases)
+    });
+  } 
     
   useEffect(() => {
     const fetchData = async () => {
-      const [products, bands, genres, categories, showcases] = await Promise.all([
-        getAllProduct(),
-        getAllBands(),
-        getAllGenres(),
-        getAllCategories(),
-        getAllShowcases()
-      ]);
-
-      setData({
-        products: await fetchRelatedData('products', products),
-        bands: await fetchRelatedData('bands', bands),
-        genres: await fetchRelatedData('genres', genres),
-        categories,
-        showcases: await fetchRelatedData('showcases', showcases)
-      });
+      await fecth();
     };
 
 
     fetchData();
-  }, [GetAllBands, GetAllProduct, GetAllCategories, GetAllGenres, GetAllShowcases]);
+  }, []);
+
+  useEffect(() => {
+    if (modalIsOpened) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [modalIsOpened])
 
   const handleButtonClick = (crud) => {
     setSelectedCrud(crud);
   }
 
   return (
-    <div className="container mx-auto p-4 flex flex-col items-center justify-center">
+    <div className={cn(modalIsOpened ? "overflow-y-hidden" : null, "container mx-auto p-4 flex flex-col items-center justify-center")}>
       <div className="flex flex-wrap gap-2 mb-4">
         <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("products")}>
-          Manage Products
+          Gerenciar Produtos
         </Button>
         <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("bands")}>
-          Manage Bands
+          Gerenciar Bandas
         </Button>
         <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("genres")}>
-          Manage Genres
+          Gerenciar Gêneros
         </Button>
         <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("categories")}>
-          Manage Categories
+          Gerenciar Categorias
         </Button>
         <Button className="w-full sm:w-auto sm:flex-1" onClick={() => handleButtonClick("showcases")}>
-          Manage ShowCase
+          Gerenciar Showcases
         </Button>
       </div>
-      <CrudContent selectedCrud={selectedCrud} initialData={data[selectedCrud]}/>
+      <CrudContent selectedCrud={selectedCrud} initialData={data[selectedCrud]} refetch={fecth} setOpened={setModalIsOpened}/>
     </div>
   )
 }

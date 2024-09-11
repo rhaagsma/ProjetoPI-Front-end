@@ -34,9 +34,7 @@ const LoginSignup = () => {
                 telephone: registerTelefone,
                 password: registerPassword 
             };
-            const response = await SubmitRegister(user);
-            console.log(user);
-            console.log(response);
+            await SubmitRegister(user);
             setFeedbackMessage("Registration successful!");
         } catch (error) {
             console.error(error);

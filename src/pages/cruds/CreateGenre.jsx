@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "src/components/ui/button";
-import { saveGenre, updateGenre } from 'src/services/http-commons';
 import { Input } from 'src/components/ui/input';
+import { addGenre, updateGenre } from 'src/services/genres';
+import { useToast } from 'src/hooks/use-toast';
 
-const CreateGenre = ({handleHide, data}) => {
+const CreateGenre = ({handleHide, data, refecth}) => {
+  const { toast } = useToast();
   const [genreName, setGenreName] = useState('');
-
 
   const handleSaveGenre = async (e) => {
       e.preventDefault();
@@ -17,17 +18,28 @@ const CreateGenre = ({handleHide, data}) => {
       if (data) {
 
         const response = await updateGenre(data.id, genreData);
-        if (!response.ok) {
-          throw new Error('Failed to update genre');
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível atualizar o gênero. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return;
         }
       } else {
         
-        const response = await saveGenre(genreData);
-        if (!response.ok) {
-          throw new Error('Failed to save genre');
+        const response = await addGenre(genreData);
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível adicionar o gênero. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return;
         }
       }
       setGenreName('');
+      refecth();
 
       console.log('Genre saved successfully');
     } catch (error) {
@@ -38,7 +50,6 @@ const CreateGenre = ({handleHide, data}) => {
     
     if (data) {
       setGenreName(data.name)
-
     }
 
   }, [data]);
@@ -48,10 +59,10 @@ const CreateGenre = ({handleHide, data}) => {
     <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productName">
-          Name
+          Nome
         </label>        
         <Input
-          label="Genre Name"
+          label="Nome do Gênero"
           id="name"
           type="text"
           value={genreName}
@@ -60,9 +71,9 @@ const CreateGenre = ({handleHide, data}) => {
 
           <div className="flex items-center justify-between">
             <Button onClick={handleSaveGenre}>
-              {data ? 'Update Genre' : 'Save Genre'}
+              {data ? 'Atualizar Gênero' : 'Adicionar Gênero'}
             </Button>
-            <Button onClick={handleHide}>Cancel</Button>
+            <Button onClick={handleHide}>Cancelar</Button>
         
           </div>
         </div>

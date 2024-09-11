@@ -4,29 +4,12 @@ import gati from "../assets/gati firte.png"
 import { Navigate, Link } from "react-router-dom"
 const Hero = () => {
     return (
-        <div className="hero">
-            <div className="hero-left">
-                <h2>The cats with earphones!!</h2>
-                <div>
-                    <div className="hand-hand-icon">
-                        <p>new</p>
-                        <img src="aba"alt="Icone auper legal de um icone super legal de um icone super legal de um icone super legal de um icone super icone legal icone"/>
-                    </div>
-                    <p>collections</p>
-                    <p>for everyone</p>
-                </div>
-                <button className="hero-latest-btn">
-                    <Link to="/special">
-                        <div>Latest Collection</div>
-                        <img src="arrow_icon" alt="" />
-                    </Link>
-                </button>
-            </div>
-            <div className="hero-right">
-                <img src={gati} alt="" />
-                
-            </div>
-        </div>
+        // <div className="flex items-center justify-center h-[50vh] py-7">
+        //     <div className="w-full flex max-w-7xl h-full rounded-md bg-slate-300 items-center justify-center">
+        //         <h1 className="text-slate-700">Carrosel</h1>
+        //     </div>
+        // </div>
+        <div/>
     )
 }
 

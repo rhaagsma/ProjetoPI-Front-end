@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'src/components/ui/button'
-import { saveProduct, getAllBands, getAllCategories, updateProduct } from 'src/services/http-commons'
 import { Input } from 'src/components/ui/input'
 import Image from './Image'
+import { useToast } from 'src/hooks/use-toast'
+import { getAllBands } from 'src/services/bands'
+import { getAllCategories } from 'src/services/categories'
+import { addProduct, updateProduct } from 'src/services/products'
+import { cn } from 'src/lib/utils'
 
-const CreateProduct = ({handleHide, data}) => {
+const CreateProduct = ({handleHide, data, refecth}) => {
+  const { toast } = useToast();
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -19,6 +24,7 @@ const CreateProduct = ({handleHide, data}) => {
   const fetchBands = async () => {
     try {
       const bands = await getAllBands();
+      console.log('bandas', bands);
       setExistsBands(bands);
     } catch (error) {
       console.error('Error fetching bands:', error);
@@ -28,6 +34,7 @@ const CreateProduct = ({handleHide, data}) => {
   const fetchCategories = async () => {
     try {
       const categories = await getAllCategories();
+      console.log('categorias', categories);
       setExistCategories(categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -35,7 +42,7 @@ const CreateProduct = ({handleHide, data}) => {
   }
 
   const handleSaveProduct = async (e) => {
-    
+    e.preventDefault();
 
     const productData = {
       name: productName,
@@ -51,14 +58,24 @@ const CreateProduct = ({handleHide, data}) => {
       if (data) {
 
         const response = await updateProduct(data.id, productData);
-        if (!response.ok) {
-          throw new Error('Failed to update product');
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível atualizar o produto. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return;
         }
       } else {
         
-        const response = await saveProduct(productData);
-        if (!response.ok) {
-          throw new Error('Failed to save product');
+        const response = await addProduct(productData);
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível adicionar o produto. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return;
         }
       }
 
@@ -69,6 +86,7 @@ const CreateProduct = ({handleHide, data}) => {
       setSelectedBands([]);
       setSelectedCategory('');
       setProductImage('');
+      refecth();
 
       console.log('Product saved successfully');
     } catch (error) {
@@ -93,7 +111,7 @@ const CreateProduct = ({handleHide, data}) => {
   }, [data]);
   
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center">
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="productName">
@@ -138,23 +156,22 @@ const CreateProduct = ({handleHide, data}) => {
           </label>
           <div>
             {existsBands.map((band) => (
-              <label key={band.id} className="inline-flex items-center mr-6">
-                <input
-                  type="checkbox"
-                  name="band"
-                  value={band.id}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedBands([...selectedBands, e.target.value]);
-                    } else {
-                      setSelectedBands(selectedBands.filter((id) => id !== e.target.value));
-                      
-                    }
-                  }}
-                  className="form-checkbox h-4 w-4 text-blue-600"
-                />
-                <span className="ml-2 text-gray-700">{band.name}</span>
-              </label>
+              <div 
+                key={band.id} 
+                className={"flex gap-2 items-center"}
+                onClick={() => {
+                  if (selectedCategory.includes(band.id)) {
+                    setSelectedBands(selectedBands.filter((id) => id !== band.id));
+                  } else {
+                    setSelectedBands([...selectedBands, band.id]);
+                  }
+                }}
+              >
+                <div className={cn(selectedBands.includes(band.id) ? "bg-blue-500 border-blue-500" : "border-slate-500", "w-4 h-4 border rounded-sm flex items-center justify-center")}>
+                  {selectedBands.includes(band.id) && <div className="w-2 h-2 bg-white rounded-sm"/>}
+                </div>
+                <span>{band.name}</span>
+              </div>
             ))}
           </div>
         </div>
@@ -164,22 +181,22 @@ const CreateProduct = ({handleHide, data}) => {
           </label>
           <div>
           {existCategories.map((category) => (
-            <label key={category.id} className="inline-flex items-center mr-6">
-              <input
-                type="radio"
-                name="category"
-                value={category.id}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setSelectedBands([...selectedBands, e.target.value]);
-                  } else {
-                    setSelectedBands(selectedBands.filter((id) => id !== e.target.value));
-                  }
-                }}
-                className="form-radio h-4 w-4 text-blue-600"
-              />
-              <span className="ml-2 text-gray-700">{category.name}</span>
-            </label>
+            <div 
+              key={category.id} 
+              className={"flex gap-2 items-center"}
+              onClick={() => {
+                if(selectedCategory === category.id) {
+                  setSelectedCategory('');
+                } else {
+                  setSelectedCategory(category.id);
+                }
+              }}
+            >
+              <div className={cn(selectedCategory.includes(category.id) ? "bg-blue-500 border-blue-500" : "border-slate-500", "w-4 h-4 border rounded-sm flex items-center justify-center")}>
+                {selectedCategory.includes(category.id) && <div className="w-2 h-2 bg-white rounded-sm"/>}
+              </div>
+              <span>{category.name}</span>
+            </div>
           ))}
         </div>
         </div>

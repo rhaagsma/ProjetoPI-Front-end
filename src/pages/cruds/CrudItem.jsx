@@ -1,9 +1,5 @@
 import React, { useState } from "react"
 import { Button } from "src/components/ui/button"
-import {
-         deleteProduct, deleteBand, deleteCategory, deleteGenre,
-         deleteShowcase
-        } from "src/services/http-commons"
 import CreateProduct from "./CreateProduct";
 import CreateBand from "./CreateBand";
 import CreateGenre from "./CreateGenre";
@@ -17,8 +13,13 @@ import GenreCard from "./CrudsCards/GenreCard";
 import ShowCaseCard from "./CrudsCards/ShowCaseCard";
 
 import Modal from "./modal";
+import { deleteProduct } from "src/services/products";
+import { deleteBand } from "src/services/bands";
+import { deleteCategory } from "src/services/categories";
+import { deleteGenre } from "src/services/genres";
+import { deleteShowcase } from "src/services/showcase";
 
-const CrudItem = ({selectedCrud, item}) => {
+const CrudItem = ({selectedCrud, item, setOpened}) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = async (e) => {
@@ -89,7 +90,10 @@ const CrudItem = ({selectedCrud, item}) => {
         </>
       )}
       <div className="flex items-center justify-between py-3">
-        <Button onClick={() => setShowModal(true)}>
+        <Button onClick={() => {
+          setOpened(true);
+          setShowModal(true);
+        }}>
           Edit
         </Button>
         <Button className="bg-red-500" onClick={handleDelete}>

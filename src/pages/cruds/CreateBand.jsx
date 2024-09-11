@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'src/components/ui/button';
-import { getAllGenres, saveBand, updateBand } from 'src/services/http-commons';
 import { Input } from 'src/components/ui/input';
+import { Textarea } from 'src/components/ui/textarea';
+import { useToast } from 'src/hooks/use-toast';
+import { addBand, updateBand } from 'src/services/bands';
+import { getAllGenres } from 'src/services/genres';
+import Image from './Image';
 
-const CreateBand = ({ handleHide, data }) => {
+const CreateBand = ({ handleHide, data, refecth }) => {
+  const { toast } = useToast();
   const [bandName, setBandName] = useState('');
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [bandDescription, setBandDescription] = useState('');
   const [existGenres, setExistsGenres] = useState([]);
+  const [bandImage, setBandImage] = useState('');
   
 
   const fetchGenres = async () => {
@@ -24,29 +31,41 @@ const CreateBand = ({ handleHide, data }) => {
     const bandData = {
       name: bandName,
       genres: selectedGenres,
-      products: data.products
+      description: bandDescription,
+      image: bandImage,
     }
 
     try {
       if (data) {
         console.log(bandData)
         const response = await updateBand(data.id, bandData);
-        if (!response.ok) {
-          throw new Error('Failed to update band');
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível atualizar a banda. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return;
         }
         else{
           console.log(response);
         }
 
       }else {
-        const response = await saveBand(bandData);
+        const response = await addBand(bandData);
 
-        if (!response.ok) {
-          throw new Error('Failed to save band');
+        if (response?.error) {
+          toast({
+            title: 'Ops! Houve um erro',
+            description: 'Não foi possível adicionar a banda. Por favor, tente novamente.',
+            variant: 'destructive',
+          })
+          return
         }
 
         setBandName('');
         setSelectedGenres([]);
+        refecth()
       }
       console.log('Band saved successfully');
     } catch (error) {
@@ -63,11 +82,12 @@ const CreateBand = ({ handleHide, data }) => {
       console.log(data)
       setBandName(data.name);
       setSelectedGenres(data.genres.map((genre) => genre.id));
+      setBandDescription(data.description);
     }
   }, [data]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center">
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bandName">
@@ -78,6 +98,16 @@ const CreateBand = ({ handleHide, data }) => {
             id="BandName"
             value={bandName}
             onChange={(e) => setBandName(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bandDescription">
+            Description
+          </label>
+          <Textarea
+            type="text"
+            id="BandDescription"
+            value={bandDescription}
+            onChange={(e) => setBandDescription(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
@@ -108,13 +138,19 @@ const CreateBand = ({ handleHide, data }) => {
               </label>
             ))}
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bandImage">
+              Image
+            </label>
+            <Image value={bandImage} onChange={setBandImage} />
+          </div>
         </div>
 
         <div className="flex items-center justify-between">
           <Button onClick={handleSaveBand}>
-            {data ? 'Update Product' : 'Save Product'}
+            {data ? 'Atualizar banda' : 'Adicionar banda'}
           </Button>
-          <Button onClick={handleHide}>Cancel</Button>
+          <Button onClick={handleHide}>Cancelar</Button>
         </div>
 
       </form>

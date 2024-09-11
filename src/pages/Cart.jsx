@@ -5,12 +5,21 @@ import { Button } from 'src/components/ui/button';
 import FooterCart from 'src/components/footerCart';
 import { useAuth } from 'src/services/context';
 import { useNavigate } from 'react-router-dom';
+import { finalizeC } from 'src/services/cart';
+import { getUser } from 'src/services/users';
+import { getUserId } from 'src/services/auth';
+import { getAllAddresses } from 'src/services/address';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'src/components/ui/select';
+import { useToast } from 'src/hooks/use-toast';
 
 const Cart = ({pageName}) => {
     const { authenticated } = useAuth();
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [addresses, setAddresses] = useState([])
+    const [selectedAddress, setSelectedAddress] = useState(null)
+    const {toast} = useToast();
 
     async function initialize() {
         try {
@@ -23,6 +32,17 @@ const Cart = ({pageName}) => {
             setData(res)
         } catch (error) {
             setData([]);   
+        }
+
+        if (authenticated) {
+            try {
+                const userId = getUserId()
+                const res = await getAllAddresses(userId)
+                setAddresses(res)
+                if (res.length) setSelectedAddress(res[0]?.id)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
@@ -37,10 +57,37 @@ const Cart = ({pageName}) => {
     async function finalize() {
         if (authenticated) {
             try {
-                alert('Compra finalizada com sucesso')
-                localStorage.removeItem("productsCart")
+                const userId = getUserId()
+                const toSend = {
+                    user: userId,
+                    address: selectedAddress,
+                    totalPrice: parseFloat(totalPrice),
+                    date: new Date(),
+                    items: data.map(el => ({productId: el.id, quantity: el.qtd}))
+                }
+                const res = await finalizeC(toSend)
+                if(!res.error) {
+                    toast({
+                        title: 'Compra finalizada',
+                        description: 'Sua compra foi finalizada com sucesso',
+                        variant: 'success'
+                    })
+                    setData([])
+                    setTotalPrice(0)
+                    localStorage.removeItem("productsCart")
+                } else {
+                    toast({
+                        title: 'Erro',
+                        description: 'Erro ao finalizar compra',
+                        variant: 'destructive'
+                    })
+                }
             } catch (error) {
-                alert('Erro ao finalizar compra')
+                toast({
+                    title: 'Erro',
+                    description: 'Erro ao finalizar compra',
+                    variant: 'destructive'
+                })
             }
         } else {
             navigate('/login')
@@ -49,7 +96,7 @@ const Cart = ({pageName}) => {
 
     useEffect(() => {
         initialize()
-    }, [])
+    }, [authenticated])
 
 
     return (
@@ -84,14 +131,41 @@ const Cart = ({pageName}) => {
                             description={el.description}
                             qtd={el.qtd}
                             deleteItem={() => deleteItem(el.id)}
+                            setProduct={(qtd) => {
+                                const exists = localStorage.getItem("productsCart")
+                                let JSONCart = exists ? JSON.parse(exists) : []
+                                let newCart = JSONCart.map(el2 => el2.id === el.id ? {...el2, qtd: qtd} : el2)
+                                localStorage.setItem("productsCart", JSON.stringify(newCart))
+                                setData(newCart)
+
+                                const total = newCart.reduce((acc, el) => acc + el.price * el.qtd, 0)
+                                setTotalPrice(total)
+                            }}
                         />
                     ))}
                     {!data.length ? <p>Nenhum produto encontrado</p> : null}
                 </div>
 
                 <FooterCart totalPrice={totalPrice}/>
-                <div className="flex items-center justify-end" onClick={finalize}>
-                    <Button className="w-fit">Finalizar compra</Button>
+                <div className="flex items-end justify-end gap-4">
+                    {authenticated ? (
+                        <div className='flex flex-col gap-2'>
+                            <h1 className='text-xl font-semibold'>Endereço de entrega</h1>
+                            <Select value={selectedAddress} onValueChange={e => setSelectedAddress(e)}>
+                                <SelectTrigger className="w-96">
+                                    <SelectValue placeholder="Selecione o endereço de entrega" />
+                                </SelectTrigger>
+                                <SelectContent className="w-full">
+                                    {addresses.map(el => (
+                                        <SelectItem value={el.id} className="w-full">
+                                            {el.name}: {el.street}, {el.number} {el.neighborhood ? ' - ' + el.neighborhood : ''} - {el.city}/{el.state}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    ) : null}
+                    <Button className="w-fit" onClick={finalize}>Finalizar compra</Button>
                 </div>
             </div>
         </Layout>

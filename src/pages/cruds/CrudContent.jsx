@@ -7,9 +7,27 @@ import CreateBand from "./CreateBand";
 import CreateShowCase from "./CreateShowCase";
 import { Button } from "src/components/ui/button";
 
-const CrudContent = ({ selectedCrud, initialData }) => {
+const translateCrud = (text) => {
+  switch (text) {
+    case "products":
+      return "Produtos";
+    case "genres":
+      return "Gêneros";
+    case "categories":
+      return "Categorias";
+    case "bands":
+      return "Bandas";
+    case "showcases":
+      return "Showcases";
+    default:
+      return text;
+  }
+}
+
+const CrudContent = ({ selectedCrud, initialData, refetch, setOpened }) => {
   console.log(selectedCrud, initialData)
   const [showCreateItem, setShowCreateItem] = useState(false);
+
 
   const handleShowCreateItem = () => {
     setShowCreateItem(true);
@@ -23,7 +41,7 @@ const CrudContent = ({ selectedCrud, initialData }) => {
     <div className="p-4 grid grid-cols-1 gap-4">
       <div className="flex justify-center">
         <h2 className="text-xl font-bold mb-4">
-          {selectedCrud.charAt(0).toUpperCase() + selectedCrud.slice(1)} Management
+          Gerenciamento de {translateCrud(selectedCrud)}
         </h2>
       </div>
 
@@ -32,10 +50,10 @@ const CrudContent = ({ selectedCrud, initialData }) => {
         
         {initialData.length ? (
           initialData.map(item => (
-            <CrudItem key={item.id} selectedCrud={selectedCrud} item={item} />
+            <CrudItem key={item.id} selectedCrud={selectedCrud} item={item} setOpened={setOpened}/>
           ))
         ) : (
-          <p className="text-gray-600">Nenhum {selectedCrud} encontrado</p>
+          <p className="text-gray-600">Nenhum {translateCrud(selectedCrud).toLowerCase().substring(0, translateCrud(selectedCrud).length - 1)} encontrado</p>
         )}
       </div>
 
@@ -43,22 +61,22 @@ const CrudContent = ({ selectedCrud, initialData }) => {
         <Button
           onClick={handleShowCreateItem}
         >
-          Add New {selectedCrud}
+          Adicionar {translateCrud(selectedCrud)}
         </Button>
       </div>
 
       {showCreateItem && (
         <div className="mt-4">
           {selectedCrud === "products" ? (
-            <CreateProduct  handleHide={handleHideCreateItem} />
+            <CreateProduct  handleHide={handleHideCreateItem} refecth={refetch}/>
           ) : selectedCrud === "genres" ? (
-            <CreateGenre  handleHide={handleHideCreateItem} />
+            <CreateGenre  handleHide={handleHideCreateItem} refecth={refetch}/>
           ) : selectedCrud === "categories" ? (
-            <CreateCategory  handleHide={handleHideCreateItem} />
+            <CreateCategory  handleHide={handleHideCreateItem} refecth={refetch}/>
           ) : selectedCrud === "bands" ? (
-            <CreateBand  handleHide={handleHideCreateItem} />
+            <CreateBand  handleHide={handleHideCreateItem} refecth={refetch}/>
           ) :  selectedCrud === "showcases" ? (
-            <CreateShowCase  handleHide={handleHideCreateItem} />
+            <CreateShowCase  handleHide={handleHideCreateItem} refecth={refetch}/>
           ) : null}
 
         </div>
