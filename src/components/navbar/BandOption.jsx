@@ -5,12 +5,14 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu"
 
-export function BandOption({ setMenu, menu, bands }) {
+export function BandOption({ setMenu, menu, bands = [] }) {
 
   const goToBandPage = (band) => {
     setMenu("Banda")
     console.log(band)
   }
+
+  const validBands = Array.isArray(bands) ? bands : []
 
   return (
     <NavigationMenuItem>
@@ -30,7 +32,7 @@ export function BandOption({ setMenu, menu, bands }) {
               </p>
             </div>
           </li>
-          {bands?.map((band) => (
+          {validBands.map((band) => (
             <li key={band.id}>
               <div onClick={() => goToBandPage(band.name)} className='flex w-full'>
                 <Link 

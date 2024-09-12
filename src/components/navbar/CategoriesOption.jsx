@@ -5,12 +5,14 @@ import {
   NavigationMenuTrigger,
 } from "../ui/navigation-menu"
 
-export function CategoriesOption({ setMenu, menu, categories }) {
+export function CategoriesOption({ setMenu, menu, categories = [] }) {
 
   const goToCategoriesPage = (category) => {
     setMenu("Categorias")
     console.log(category)
   }
+
+  const validCategories = Array.isArray(categories) ? categories : []
 
   return (
     <NavigationMenuItem>
@@ -30,7 +32,7 @@ export function CategoriesOption({ setMenu, menu, categories }) {
               </p>
             </div>
           </li>
-          {categories?.map((category) => (
+          {validCategories.map((category) => (
             <li key={category.id}>
               <div onClick={() => goToCategoriesPage(category.name)} className='flex w-full'>
                 <Link 
