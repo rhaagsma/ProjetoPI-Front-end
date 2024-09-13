@@ -22,6 +22,8 @@ const AllProducts = () => {
         initialize()
     }, [])
 
+    const validData = Array.isArray(data) ? data : []
+
     return (
         <Layout>
             <div className="flex flex-col items-center">
@@ -31,7 +33,7 @@ const AllProducts = () => {
 
                 <div className="w-full mt-4">
                     <div className='grid grid-cols-4 gap-4'>
-                        {data.map(el => <Card id={el.id} image={el.image} name={el.name} price={el.price}/>)}
+                        {validData.map(el => <Card id={el.id} image={el.image} name={el.name} price={el.price}/>)}
                         {!data.length ? <p>Nenhum produto encontrado</p> : null}
                     </div>
                 </div>
