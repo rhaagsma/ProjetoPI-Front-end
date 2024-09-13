@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Slider from 'react-slick';
-import { getAllProduct, getAllShowcases } from "src/services/http-commons";
+import { getAllProducts } from "src/services/products";
 import Card from "./card";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { getAllShowcases } from "src/services/showcase";
 
 function SampleNextArrow(props) {
   const { className, style, onClick, color } = props;
@@ -28,7 +29,7 @@ function SamplePrevArrow(props) {
 }
 
 const fetchData = async (showcases) => {
-  const Products = await getAllProduct();
+  const Products = await getAllProducts();
 
   return showcases.map(showcase => {
     const ShowCaseProducts = Products.filter(product => showcase.products && showcase.products.includes(product.id));
