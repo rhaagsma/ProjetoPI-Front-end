@@ -4,21 +4,21 @@ import React, { useEffect, useState } from 'react';
 import Search from 'src/components/search';
 import { v4 as uuidv4 } from 'uuid';
 import { products } from '../../pages/fake';
-import { getAllProduct } from 'src/services/http-commons';
+import { getAllProducts } from 'src/services/products.js';
 
 const AllProducts = () => {
     const [data, setData] = useState([]);
 
-    async function initialize() {
-        try {
-            const res = await getAllProduct()
-            setData(res)
-        } catch (error) {
-            console.log(error) 
-        }
-    }
-
     useEffect(() => {
+        async function initialize() {
+            try {
+                const res = await getAllProducts()
+                console.log(res)
+                setData(res)
+            } catch (error) {
+                console.log(error) 
+            }
+        }
         initialize()
     }, [])
 
