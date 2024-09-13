@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "src/components/ui/button";
 import { Input } from 'src/components/ui/input'
 import { addAddress, updateAddress } from "src/services/address";
+import { getUserId } from "src/services/auth"
 
 const AddressCard = ({ user, data, handleHide }) => {
   const [addressname, setAddressname] = useState("");
@@ -14,50 +15,50 @@ const AddressCard = ({ user, data, handleHide }) => {
   const [addressstate, setAddressstate] = useState("");
   const [addresscountry, setAddresscountry] = useState("");
 
-  const handleSaveAddress = async () => {
-
-    const address = {
-        name: addressname,
-        CEP: addresscep,
-        street: addressstreet,
-        number: addressnumber,
-        city: addresscity,
-        complement: addresscomplement,
-        neighbourhood: addressneighbourhood,
-        state: addressstate,
-        country: addresscountry,
-        user: user
-    }
-    try {
-        if (data) {
-
-          const response = await updateAddress(data.id, address);
-          if (!response.ok) {
-            throw new Error('Failed to update address');
-          }
-        } else {
-
-          const response = await addAddress(address);
-          if (!response.ok) {
-            throw new Error('Failed to save address');
-          }
-        }
-        setAddressname('');
-        setAddresscep('');
-        setAddressstreet('');
-        setAddressnumber('');
-        setAddresscity('');
-        setAddresscomplement('');
-        setAddressneighbourhood('');
-        setAddressstate('');
-        setAddresscountry('');
-
-        console.log('Address saved successfully');
-      } catch (error) {
-        console.error('Error saving address:', error);
+  const handleSaveAddress = async (e) => {
+    e.preventDefault();
+      const address = {
+          name: addressname,
+          CEP: addresscep,
+          street: addressstreet,
+          number: addressnumber,
+          city: addresscity,
+          complement: addresscomplement,
+          neighbourhood: addressneighbourhood,
+          state: addressstate,
+          country: addresscountry,
+          user: getUserId()
       }
-
-    }
+      try {
+          if (data) {
+  
+            const response = await updateAddress(data.id, address);
+            if (!response.error) {
+              window.location.reload()
+            }
+          } else {
+  
+            const response = await addAddress(address);
+            if (!response.error) {
+              window.location.reload()
+            }
+          }
+          setAddressname('');
+          setAddresscep('');
+          setAddressstreet('');
+          setAddressnumber('');
+          setAddresscity('');
+          setAddresscomplement('');
+          setAddressneighbourhood('');
+          setAddressstate('');
+          setAddresscountry('');
+  
+          console.log('Address saved successfully');
+        } catch (error) {
+          console.error('Error saving address:', error);
+        }
+  
+      }
 
 
   useEffect(() => {
@@ -196,10 +197,9 @@ const AddressCard = ({ user, data, handleHide }) => {
           />
         </div>
         <div className="flex items-center justify-between">
-          <Button onClick={handleSaveAddress}>
+        <Button onClick={(e) => handleSaveAddress(e)}>
             {data ? 'Update Address' : 'Save Address'}
-          </Button>
-          <Button onClick={handleHide}>Cancel</Button>
+        </Button>
         </div>
 
       </form>

@@ -7,6 +7,7 @@ import { getAllBands } from 'src/services/bands'
 import { getAllCategories } from 'src/services/categories'
 import { addProduct, updateProduct } from 'src/services/products'
 import { cn } from 'src/lib/utils'
+import { getUserId } from 'src/services/auth'
 
 const CreateProduct = ({handleHide, data, refecth}) => {
   const { toast } = useToast();
@@ -51,7 +52,8 @@ const CreateProduct = ({handleHide, data, refecth}) => {
       price: productPrice,
       quantity: productQuantity,
       bands: selectedBands,
-      category: selectedCategory
+      category: selectedCategory,
+      user: getUserId()
     }
 
     try {

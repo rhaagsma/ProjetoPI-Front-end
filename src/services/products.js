@@ -51,7 +51,7 @@ export async function updateProduct(id, data) {
   try {
     const res = await api.put(`/product/${id}`, data, {
       headers: {
-        authorization: `Bearer ${tkRes}`,
+        authorization: `Bearer${tkRes}`,
       },
     });
 
